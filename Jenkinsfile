@@ -38,10 +38,6 @@ node('docker') {
             String releaseVersion = gitWrapper.getSimpleBranchName()
             String version = makefile.getVersion()
 
-            stage('Sign after Release') {
-                gpg.createSignature()
-            }
-
             stage('Finish Release') {
                 gitflow.finishRelease(releaseVersion, productionReleaseBranch)
             }
