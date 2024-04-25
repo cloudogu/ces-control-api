@@ -10,6 +10,7 @@ gitflow = new GitFlow(this, gitWrapper)
 github = new GitHub(this, gitWrapper)
 changelog = new Changelog(this)
 gpg = new Gpg(this, docker)
+Makefile makefile = new Makefile(this)
 
 // Configuration of repository
 repositoryOwner = "cloudogu"
@@ -36,10 +37,6 @@ node('docker') {
         if (gitflow.isReleaseBranch()) {
             String releaseVersion = gitWrapper.getSimpleBranchName()
             String version = makefile.getVersion()
-
-            stage('Sign after Release') {
-                gpg.createSignature()
-            }
 
             stage('Finish Release') {
                 gitflow.finishRelease(releaseVersion, productionReleaseBranch)
