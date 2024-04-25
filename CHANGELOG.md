@@ -8,4 +8,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed
-- extracted grpc api definitions from k8s-ces-control and cesappd
+- extracted grpc api definitions from k8s-ces-control and cesappd (#1)
