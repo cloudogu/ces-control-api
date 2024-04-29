@@ -83,7 +83,7 @@ func (c *doguLogMessagesClient) GetForDoguWithDate(ctx context.Context, in *Dogu
 }
 
 type DoguLogMessages_GetForDoguWithDateClient interface {
-	Recv() (*types.ChunkedDataResponse, error)
+	Recv() (*DoguLogMessage, error)
 	grpc.ClientStream
 }
 
@@ -91,8 +91,8 @@ type doguLogMessagesGetForDoguWithDateClient struct {
 	grpc.ClientStream
 }
 
-func (x *doguLogMessagesGetForDoguWithDateClient) Recv() (*types.ChunkedDataResponse, error) {
-	m := new(types.ChunkedDataResponse)
+func (x *doguLogMessagesGetForDoguWithDateClient) Recv() (*DoguLogMessage, error) {
+	m := new(DoguLogMessage)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -161,7 +161,7 @@ func _DoguLogMessages_GetForDoguWithDate_Handler(srv interface{}, stream grpc.Se
 }
 
 type DoguLogMessages_GetForDoguWithDateServer interface {
-	Send(*types.ChunkedDataResponse) error
+	Send(*DoguLogMessage) error
 	grpc.ServerStream
 }
 
@@ -169,7 +169,7 @@ type doguLogMessagesGetForDoguWithDateServer struct {
 	grpc.ServerStream
 }
 
-func (x *doguLogMessagesGetForDoguWithDateServer) Send(m *types.ChunkedDataResponse) error {
+func (x *doguLogMessagesGetForDoguWithDateServer) Send(m *DoguLogMessage) error {
 	return x.ServerStream.SendMsg(m)
 }
 
