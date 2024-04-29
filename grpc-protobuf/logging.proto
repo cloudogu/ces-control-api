@@ -6,7 +6,7 @@ import "google/protobuf/timestamp.proto";
 
 service DoguLogMessages {
   rpc GetForDogu(DoguLogMessageRequest) returns (stream types.ChunkedDataResponse);
-  rpc GetForDoguWithDate(DoguLogMessageWithDateRequest) returns (stream DoguLogMessage);
+  rpc QueryForDogu(DoguLogMessageQueryRequest) returns (stream DoguLogMessage);
 }
 
 message DoguLogMessageRequest {
@@ -18,15 +18,15 @@ message DoguLogMessageRequest {
   uint32 line_count = 2;
 }
 
-message DoguLogMessageWithDateRequest {
+message DoguLogMessageQueryRequest {
   // dogu_name contains the name of the dogu for which log lines should be returned in the response. Must not be empty.
   string dogu_name = 1;
   // start_date start datetime of the first log message to be retrieved. Optional
-  optional string start_date = 2;
+  optional google.protobuf.Timestamp start_date = 3;
   // end_date end datetime of the last log message to be retrieved. Optional
-  optional string end_date = 3;
+  optional google.protobuf.Timestamp end_date = 4;
   // filter the log for a message, for example the log level. Optional
-  optional string filter = 4;
+  optional string filter = 5;
 }
 
 message DoguLogMessage {

@@ -24,7 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type DoguLogMessagesClient interface {
 	GetForDogu(ctx context.Context, in *DoguLogMessageRequest, opts ...grpc.CallOption) (DoguLogMessages_GetForDoguClient, error)
-	GetForDoguWithDate(ctx context.Context, in *DoguLogMessageWithDateRequest, opts ...grpc.CallOption) (DoguLogMessages_GetForDoguWithDateClient, error)
+	QueryForDogu(ctx context.Context, in *DoguLogMessageQueryRequest, opts ...grpc.CallOption) (DoguLogMessages_QueryForDoguClient, error)
 }
 
 type doguLogMessagesClient struct {
@@ -67,12 +67,12 @@ func (x *doguLogMessagesGetForDoguClient) Recv() (*types.ChunkedDataResponse, er
 	return m, nil
 }
 
-func (c *doguLogMessagesClient) GetForDoguWithDate(ctx context.Context, in *DoguLogMessageWithDateRequest, opts ...grpc.CallOption) (DoguLogMessages_GetForDoguWithDateClient, error) {
-	stream, err := c.cc.NewStream(ctx, &DoguLogMessages_ServiceDesc.Streams[1], "/logging.DoguLogMessages/GetForDoguWithDate", opts...)
+func (c *doguLogMessagesClient) QueryForDogu(ctx context.Context, in *DoguLogMessageQueryRequest, opts ...grpc.CallOption) (DoguLogMessages_QueryForDoguClient, error) {
+	stream, err := c.cc.NewStream(ctx, &DoguLogMessages_ServiceDesc.Streams[1], "/logging.DoguLogMessages/QueryForDogu", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &doguLogMessagesGetForDoguWithDateClient{stream}
+	x := &doguLogMessagesQueryForDoguClient{stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -82,16 +82,16 @@ func (c *doguLogMessagesClient) GetForDoguWithDate(ctx context.Context, in *Dogu
 	return x, nil
 }
 
-type DoguLogMessages_GetForDoguWithDateClient interface {
+type DoguLogMessages_QueryForDoguClient interface {
 	Recv() (*DoguLogMessage, error)
 	grpc.ClientStream
 }
 
-type doguLogMessagesGetForDoguWithDateClient struct {
+type doguLogMessagesQueryForDoguClient struct {
 	grpc.ClientStream
 }
 
-func (x *doguLogMessagesGetForDoguWithDateClient) Recv() (*DoguLogMessage, error) {
+func (x *doguLogMessagesQueryForDoguClient) Recv() (*DoguLogMessage, error) {
 	m := new(DoguLogMessage)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -104,7 +104,7 @@ func (x *doguLogMessagesGetForDoguWithDateClient) Recv() (*DoguLogMessage, error
 // for forward compatibility
 type DoguLogMessagesServer interface {
 	GetForDogu(*DoguLogMessageRequest, DoguLogMessages_GetForDoguServer) error
-	GetForDoguWithDate(*DoguLogMessageWithDateRequest, DoguLogMessages_GetForDoguWithDateServer) error
+	QueryForDogu(*DoguLogMessageQueryRequest, DoguLogMessages_QueryForDoguServer) error
 	mustEmbedUnimplementedDoguLogMessagesServer()
 }
 
@@ -115,8 +115,8 @@ type UnimplementedDoguLogMessagesServer struct {
 func (UnimplementedDoguLogMessagesServer) GetForDogu(*DoguLogMessageRequest, DoguLogMessages_GetForDoguServer) error {
 	return status.Errorf(codes.Unimplemented, "method GetForDogu not implemented")
 }
-func (UnimplementedDoguLogMessagesServer) GetForDoguWithDate(*DoguLogMessageWithDateRequest, DoguLogMessages_GetForDoguWithDateServer) error {
-	return status.Errorf(codes.Unimplemented, "method GetForDoguWithDate not implemented")
+func (UnimplementedDoguLogMessagesServer) QueryForDogu(*DoguLogMessageQueryRequest, DoguLogMessages_QueryForDoguServer) error {
+	return status.Errorf(codes.Unimplemented, "method QueryForDogu not implemented")
 }
 func (UnimplementedDoguLogMessagesServer) mustEmbedUnimplementedDoguLogMessagesServer() {}
 
@@ -152,24 +152,24 @@ func (x *doguLogMessagesGetForDoguServer) Send(m *types.ChunkedDataResponse) err
 	return x.ServerStream.SendMsg(m)
 }
 
-func _DoguLogMessages_GetForDoguWithDate_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(DoguLogMessageWithDateRequest)
+func _DoguLogMessages_QueryForDogu_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(DoguLogMessageQueryRequest)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(DoguLogMessagesServer).GetForDoguWithDate(m, &doguLogMessagesGetForDoguWithDateServer{stream})
+	return srv.(DoguLogMessagesServer).QueryForDogu(m, &doguLogMessagesQueryForDoguServer{stream})
 }
 
-type DoguLogMessages_GetForDoguWithDateServer interface {
+type DoguLogMessages_QueryForDoguServer interface {
 	Send(*DoguLogMessage) error
 	grpc.ServerStream
 }
 
-type doguLogMessagesGetForDoguWithDateServer struct {
+type doguLogMessagesQueryForDoguServer struct {
 	grpc.ServerStream
 }
 
-func (x *doguLogMessagesGetForDoguWithDateServer) Send(m *DoguLogMessage) error {
+func (x *doguLogMessagesQueryForDoguServer) Send(m *DoguLogMessage) error {
 	return x.ServerStream.SendMsg(m)
 }
 
@@ -187,8 +187,8 @@ var DoguLogMessages_ServiceDesc = grpc.ServiceDesc{
 			ServerStreams: true,
 		},
 		{
-			StreamName:    "GetForDoguWithDate",
-			Handler:       _DoguLogMessages_GetForDoguWithDate_Handler,
+			StreamName:    "QueryForDogu",
+			Handler:       _DoguLogMessages_QueryForDogu_Handler,
 			ServerStreams: true,
 		},
 	},
