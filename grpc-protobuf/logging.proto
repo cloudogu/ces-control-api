@@ -5,7 +5,11 @@ import 'response.proto';
 import "google/protobuf/timestamp.proto";
 
 service DoguLogMessages {
+  // GetForDogu loads the logs for the given dogu. The Response is a zip-file containing the log-file.
   rpc GetForDogu(DoguLogMessageRequest) returns (stream types.ChunkedDataResponse);
+
+  // QueryForDogu queries logs for a dogu. This api-call is only available in a MultiNode CES with k8s-ces-control.
+  // The logs are queried from k8s-loki and therefore it is only possible to query logs from period of max 30 days.
   rpc QueryForDogu(DoguLogMessageQueryRequest) returns (stream DoguLogMessage);
 }
 
@@ -21,11 +25,13 @@ message DoguLogMessageRequest {
 message DoguLogMessageQueryRequest {
   // dogu_name contains the name of the dogu for which log lines should be returned in the response. Must not be empty.
   string dogu_name = 1;
-  // start_date start datetime of the first log message to be retrieved. Optional
+  // start_date start datetime of the first log message to be retrieved. Optional, if empty is set to 30 days before the end_date.
   optional google.protobuf.Timestamp start_date = 3;
-  // end_date end datetime of the last log message to be retrieved. Optional
+  // end_date end datetime of the last log message to be retrieved. Optional, if empty is set to current date.
   optional google.protobuf.Timestamp end_date = 4;
-  // filter the log for a message, for example the log level. Optional
+  // filter the log for a message, for example the log level. Optional, if empty no filter is applied
+  // The filter simply selects all log-lines containing the given string.
+  // The filter is case-sensitive.
   optional string filter = 5;
 }
 
