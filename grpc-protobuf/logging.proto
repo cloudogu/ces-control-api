@@ -3,6 +3,7 @@ package logging;
 option go_package = "github.com/cloudogu/ces-control-api/generated/logging";
 import 'response.proto';
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
 
 service DoguLogMessages {
   // GetForDogu loads the logs for the given dogu. The Response is a zip-file containing the log-file.
@@ -11,6 +12,9 @@ service DoguLogMessages {
   // QueryForDogu queries logs for a dogu. This api-call is only available in a MultiNode CES with k8s-ces-control.
   // The logs are queried from k8s-loki and therefore it is only possible to query logs from period of max 30 days.
   rpc QueryForDogu(DoguLogMessageQueryRequest) returns (stream DoguLogMessage);
+
+  // SetLogLevel sets the log level for a specific dogu.
+  rpc SetLogLevel(LogLevelRequest) returns (google.protobuf.Empty);
 }
 
 message DoguLogMessageRequest {
@@ -40,4 +44,18 @@ message DoguLogMessage {
   google.protobuf.Timestamp timestamp = 1;
   // message contains the content of logged message
   string message = 2;
+}
+
+enum LogLevel {
+  DEBUG = 0;
+  INFO = 1;
+  WARN = 2;
+  ERROR = 3;
+}
+
+message LogLevelRequest {
+  // dogu_name contains the name of the dogu for which log level should be set. Must not be empty.
+  string dogu_name = 1;
+  // the log level to be set.
+  LogLevel log_level = 2;
 }
