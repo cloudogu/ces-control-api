@@ -24,6 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type DoguLogMessagesClient interface {
 	GetForDogu(ctx context.Context, in *DoguLogMessageRequest, opts ...grpc.CallOption) (DoguLogMessages_GetForDoguClient, error)
+	QueryForDogu(ctx context.Context, in *DoguLogMessageQueryRequest, opts ...grpc.CallOption) (DoguLogMessages_QueryForDoguClient, error)
 }
 
 type doguLogMessagesClient struct {
@@ -66,11 +67,44 @@ func (x *doguLogMessagesGetForDoguClient) Recv() (*types.ChunkedDataResponse, er
 	return m, nil
 }
 
+func (c *doguLogMessagesClient) QueryForDogu(ctx context.Context, in *DoguLogMessageQueryRequest, opts ...grpc.CallOption) (DoguLogMessages_QueryForDoguClient, error) {
+	stream, err := c.cc.NewStream(ctx, &DoguLogMessages_ServiceDesc.Streams[1], "/logging.DoguLogMessages/QueryForDogu", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &doguLogMessagesQueryForDoguClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type DoguLogMessages_QueryForDoguClient interface {
+	Recv() (*DoguLogMessage, error)
+	grpc.ClientStream
+}
+
+type doguLogMessagesQueryForDoguClient struct {
+	grpc.ClientStream
+}
+
+func (x *doguLogMessagesQueryForDoguClient) Recv() (*DoguLogMessage, error) {
+	m := new(DoguLogMessage)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // DoguLogMessagesServer is the server API for DoguLogMessages service.
 // All implementations must embed UnimplementedDoguLogMessagesServer
 // for forward compatibility
 type DoguLogMessagesServer interface {
 	GetForDogu(*DoguLogMessageRequest, DoguLogMessages_GetForDoguServer) error
+	QueryForDogu(*DoguLogMessageQueryRequest, DoguLogMessages_QueryForDoguServer) error
 	mustEmbedUnimplementedDoguLogMessagesServer()
 }
 
@@ -80,6 +114,9 @@ type UnimplementedDoguLogMessagesServer struct {
 
 func (UnimplementedDoguLogMessagesServer) GetForDogu(*DoguLogMessageRequest, DoguLogMessages_GetForDoguServer) error {
 	return status.Errorf(codes.Unimplemented, "method GetForDogu not implemented")
+}
+func (UnimplementedDoguLogMessagesServer) QueryForDogu(*DoguLogMessageQueryRequest, DoguLogMessages_QueryForDoguServer) error {
+	return status.Errorf(codes.Unimplemented, "method QueryForDogu not implemented")
 }
 func (UnimplementedDoguLogMessagesServer) mustEmbedUnimplementedDoguLogMessagesServer() {}
 
@@ -115,6 +152,27 @@ func (x *doguLogMessagesGetForDoguServer) Send(m *types.ChunkedDataResponse) err
 	return x.ServerStream.SendMsg(m)
 }
 
+func _DoguLogMessages_QueryForDogu_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(DoguLogMessageQueryRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(DoguLogMessagesServer).QueryForDogu(m, &doguLogMessagesQueryForDoguServer{stream})
+}
+
+type DoguLogMessages_QueryForDoguServer interface {
+	Send(*DoguLogMessage) error
+	grpc.ServerStream
+}
+
+type doguLogMessagesQueryForDoguServer struct {
+	grpc.ServerStream
+}
+
+func (x *doguLogMessagesQueryForDoguServer) Send(m *DoguLogMessage) error {
+	return x.ServerStream.SendMsg(m)
+}
+
 // DoguLogMessages_ServiceDesc is the grpc.ServiceDesc for DoguLogMessages service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -126,6 +184,11 @@ var DoguLogMessages_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "GetForDogu",
 			Handler:       _DoguLogMessages_GetForDogu_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "QueryForDogu",
+			Handler:       _DoguLogMessages_QueryForDogu_Handler,
 			ServerStreams: true,
 		},
 	},

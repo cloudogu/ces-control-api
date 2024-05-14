@@ -7,7 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [v1.0.0] - 2024-04-25
+## [v1.1.0] - 2024-05-02
+### Added
+- Add new query API for logs (#3)
 
+## [v1.0.0] - 2024-04-25
 ### Changed
 - extracted grpc api definitions from k8s-ces-control and cesappd (#1)
