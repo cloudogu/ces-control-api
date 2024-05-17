@@ -29,8 +29,8 @@ type DoguLogMessagesClient interface {
 	// QueryForDogu queries logs for a dogu. This api-call is only available in a MultiNode CES with k8s-ces-control.
 	// The logs are queried from k8s-loki and therefore it is only possible to query logs from period of max 30 days.
 	QueryForDogu(ctx context.Context, in *DoguLogMessageQueryRequest, opts ...grpc.CallOption) (DoguLogMessages_QueryForDoguClient, error)
-	// SetLogLevel sets the log level for a specific dogu.
-	SetLogLevel(ctx context.Context, in *LogLevelRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	// ApplyLogLevelWithRestart sets the log level for a specific dogu and restarts the dogu if the log level was changed.
+	ApplyLogLevelWithRestart(ctx context.Context, in *LogLevelRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type doguLogMessagesClient struct {
@@ -105,9 +105,9 @@ func (x *doguLogMessagesQueryForDoguClient) Recv() (*DoguLogMessage, error) {
 	return m, nil
 }
 
-func (c *doguLogMessagesClient) SetLogLevel(ctx context.Context, in *LogLevelRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *doguLogMessagesClient) ApplyLogLevelWithRestart(ctx context.Context, in *LogLevelRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, "/logging.DoguLogMessages/SetLogLevel", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/logging.DoguLogMessages/ApplyLogLevelWithRestart", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -123,8 +123,8 @@ type DoguLogMessagesServer interface {
 	// QueryForDogu queries logs for a dogu. This api-call is only available in a MultiNode CES with k8s-ces-control.
 	// The logs are queried from k8s-loki and therefore it is only possible to query logs from period of max 30 days.
 	QueryForDogu(*DoguLogMessageQueryRequest, DoguLogMessages_QueryForDoguServer) error
-	// SetLogLevel sets the log level for a specific dogu.
-	SetLogLevel(context.Context, *LogLevelRequest) (*emptypb.Empty, error)
+	// ApplyLogLevelWithRestart sets the log level for a specific dogu and restarts the dogu if the log level was changed.
+	ApplyLogLevelWithRestart(context.Context, *LogLevelRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedDoguLogMessagesServer()
 }
 
@@ -138,8 +138,8 @@ func (UnimplementedDoguLogMessagesServer) GetForDogu(*DoguLogMessageRequest, Dog
 func (UnimplementedDoguLogMessagesServer) QueryForDogu(*DoguLogMessageQueryRequest, DoguLogMessages_QueryForDoguServer) error {
 	return status.Errorf(codes.Unimplemented, "method QueryForDogu not implemented")
 }
-func (UnimplementedDoguLogMessagesServer) SetLogLevel(context.Context, *LogLevelRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SetLogLevel not implemented")
+func (UnimplementedDoguLogMessagesServer) ApplyLogLevelWithRestart(context.Context, *LogLevelRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ApplyLogLevelWithRestart not implemented")
 }
 func (UnimplementedDoguLogMessagesServer) mustEmbedUnimplementedDoguLogMessagesServer() {}
 
@@ -196,20 +196,20 @@ func (x *doguLogMessagesQueryForDoguServer) Send(m *DoguLogMessage) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func _DoguLogMessages_SetLogLevel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _DoguLogMessages_ApplyLogLevelWithRestart_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(LogLevelRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(DoguLogMessagesServer).SetLogLevel(ctx, in)
+		return srv.(DoguLogMessagesServer).ApplyLogLevelWithRestart(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/logging.DoguLogMessages/SetLogLevel",
+		FullMethod: "/logging.DoguLogMessages/ApplyLogLevelWithRestart",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DoguLogMessagesServer).SetLogLevel(ctx, req.(*LogLevelRequest))
+		return srv.(DoguLogMessagesServer).ApplyLogLevelWithRestart(ctx, req.(*LogLevelRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -222,8 +222,8 @@ var DoguLogMessages_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*DoguLogMessagesServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "SetLogLevel",
-			Handler:    _DoguLogMessages_SetLogLevel_Handler,
+			MethodName: "ApplyLogLevelWithRestart",
+			Handler:    _DoguLogMessages_ApplyLogLevelWithRestart_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
