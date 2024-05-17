@@ -242,7 +242,7 @@ func (x *Dogu) GetLogLevel() string {
 	return ""
 }
 
-// DoguBlueprintId request is empty and is used instead of google.protobuf.Empty because of backward compability
+// DoguBlueprintId request is empty and is used instead of google.protobuf.Empty because of backward compatibility
 type DoguBlueprinitIdRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

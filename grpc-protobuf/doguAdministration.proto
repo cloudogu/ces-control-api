@@ -38,7 +38,7 @@ message Dogu {
   string logLevel = 6;
 }
 
-// DoguBlueprintId request is empty and is used instead of google.protobuf.Empty because of backward compability
+// DoguBlueprintId request is empty and is used instead of google.protobuf.Empty because of backward compatibility
 message DoguBlueprinitIdRequest {}
 
 message DoguBlueprintIdResponse {
