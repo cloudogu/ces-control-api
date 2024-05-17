@@ -12,6 +12,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -23,8 +24,13 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type DoguLogMessagesClient interface {
+	// GetForDogu loads the logs for the given dogu. The Response is a zip-file containing the log-file.
 	GetForDogu(ctx context.Context, in *DoguLogMessageRequest, opts ...grpc.CallOption) (DoguLogMessages_GetForDoguClient, error)
+	// QueryForDogu queries logs for a dogu. This api-call is only available in a MultiNode CES with k8s-ces-control.
+	// The logs are queried from k8s-loki and therefore it is only possible to query logs from period of max 30 days.
 	QueryForDogu(ctx context.Context, in *DoguLogMessageQueryRequest, opts ...grpc.CallOption) (DoguLogMessages_QueryForDoguClient, error)
+	// SetLogLevel sets the log level for a specific dogu.
+	SetLogLevel(ctx context.Context, in *LogLevelRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type doguLogMessagesClient struct {
@@ -99,12 +105,26 @@ func (x *doguLogMessagesQueryForDoguClient) Recv() (*DoguLogMessage, error) {
 	return m, nil
 }
 
+func (c *doguLogMessagesClient) SetLogLevel(ctx context.Context, in *LogLevelRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/logging.DoguLogMessages/SetLogLevel", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DoguLogMessagesServer is the server API for DoguLogMessages service.
 // All implementations must embed UnimplementedDoguLogMessagesServer
 // for forward compatibility
 type DoguLogMessagesServer interface {
+	// GetForDogu loads the logs for the given dogu. The Response is a zip-file containing the log-file.
 	GetForDogu(*DoguLogMessageRequest, DoguLogMessages_GetForDoguServer) error
+	// QueryForDogu queries logs for a dogu. This api-call is only available in a MultiNode CES with k8s-ces-control.
+	// The logs are queried from k8s-loki and therefore it is only possible to query logs from period of max 30 days.
 	QueryForDogu(*DoguLogMessageQueryRequest, DoguLogMessages_QueryForDoguServer) error
+	// SetLogLevel sets the log level for a specific dogu.
+	SetLogLevel(context.Context, *LogLevelRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedDoguLogMessagesServer()
 }
 
@@ -117,6 +137,9 @@ func (UnimplementedDoguLogMessagesServer) GetForDogu(*DoguLogMessageRequest, Dog
 }
 func (UnimplementedDoguLogMessagesServer) QueryForDogu(*DoguLogMessageQueryRequest, DoguLogMessages_QueryForDoguServer) error {
 	return status.Errorf(codes.Unimplemented, "method QueryForDogu not implemented")
+}
+func (UnimplementedDoguLogMessagesServer) SetLogLevel(context.Context, *LogLevelRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetLogLevel not implemented")
 }
 func (UnimplementedDoguLogMessagesServer) mustEmbedUnimplementedDoguLogMessagesServer() {}
 
@@ -173,13 +196,36 @@ func (x *doguLogMessagesQueryForDoguServer) Send(m *DoguLogMessage) error {
 	return x.ServerStream.SendMsg(m)
 }
 
+func _DoguLogMessages_SetLogLevel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LogLevelRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DoguLogMessagesServer).SetLogLevel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/logging.DoguLogMessages/SetLogLevel",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DoguLogMessagesServer).SetLogLevel(ctx, req.(*LogLevelRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // DoguLogMessages_ServiceDesc is the grpc.ServiceDesc for DoguLogMessages service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var DoguLogMessages_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "logging.DoguLogMessages",
 	HandlerType: (*DoguLogMessagesServer)(nil),
-	Methods:     []grpc.MethodDesc{},
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "SetLogLevel",
+			Handler:    _DoguLogMessages_SetLogLevel_Handler,
+		},
+	},
 	Streams: []grpc.StreamDesc{
 		{
 			StreamName:    "GetForDogu",
