@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v1.3.0] - 2024-05-21
+### Added
+- Add log level to api (#7)
+
 ## [v1.2.0] - 2024-05-21
 ### Added
 - Add rpc to set log level for specific dogu in logging API which also restarts the dogu when changed (#5)
