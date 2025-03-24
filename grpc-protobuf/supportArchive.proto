@@ -2,6 +2,7 @@ syntax = "proto3";
 package maintenance;
 option go_package = "github.com/cloudogu/ces-control-api/generated/maintenance";
 import 'response.proto';
+import 'google/protobuf/timestamp.proto';
 
 // The SupportArchive service provides endpoints to create the support archive.
 service SupportArchive {
@@ -9,6 +10,31 @@ service SupportArchive {
 }
 
 message CreateSupportArchiveRequest {
+  oneof environment {
+    LegacySupportArchiveRequest legacy = 1 [deprecated = true];
+    CommonSupportArchiveRequest common = 2;
+  }
+}
+
+message CommonSupportArchiveRequest {
+  ExcludedContents excludedContents = 1;
+  LoggingConfig loggingConfig = 2;
+}
+
+message ExcludedContents {
+  bool systemState = 1;
+  bool secrets = 2;
+  bool logsAndEvents = 3;
+  bool volumeInfo = 4;
+  bool systemInfo = 5;
+}
+
+message LoggingConfig {
+  optional google.protobuf.Timestamp startDateTime = 1;
+  optional google.protobuf.Timestamp endDateTime = 2;
+}
+
+message LegacySupportArchiveRequest {
   // CollectEtcd defines whether etcd keys/values should be contained in the final archive (true) or nor (false)
   bool collectEtcd = 1;
 
