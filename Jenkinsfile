@@ -35,6 +35,8 @@ node('docker') {
         }
 
         stage('Lint') {
+            // most mistakes can be automatically fixed with:
+            // docker run --volume "$(pwd):/workspace" --workdir /workspace yoheimuta/protolint lint -fix grpc-protobuf
             new Docker(this)
                 .image("yoheimuta/protolint:0.53.0")
                 .mountJenkinsUser()
