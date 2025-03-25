@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.21.12
-// source: debugMode.proto
+// source: debug_mode.proto
 
 package maintenance
 
@@ -174,5 +174,5 @@ var DebugMode_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "debugMode.proto",
+	Metadata: "debug_mode.proto",
 }

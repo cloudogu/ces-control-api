@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.21.12
-// source: supportArchive.proto
+// source: support_archive.proto
 
 package maintenance
 
@@ -129,5 +129,5 @@ var SupportArchive_ServiceDesc = grpc.ServiceDesc{
 			ServerStreams: true,
 		},
 	},
-	Metadata: "supportArchive.proto",
+	Metadata: "support_archive.proto",
 }
