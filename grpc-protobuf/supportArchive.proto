@@ -23,7 +23,7 @@ message CommonSupportArchiveRequest {
 
 message ExcludedContents {
   bool systemState = 1;
-  bool secrets = 2;
+  bool sensitiveData = 2;
   bool logsAndEvents = 3;
   bool volumeInfo = 4;
   bool systemInfo = 5;
