@@ -12,7 +12,8 @@ service BackupManagement {
 
 // LastSuccessfulBackupRequest contains the data which are used to retrieve information about the last successfully
 // created backup.
-message LastSuccessfulBackupRequest {}
+message LastSuccessfulBackupRequest {
+}
 
 // LastBackupResponse contains information about the last successfully created backup.
 message BackupResponse {
@@ -32,7 +33,8 @@ message BackupResponse {
 
 // ResticCredentialValidRequest contains the data which are used to retrieve information about validity of the restic
 // repo credentials entered into etcd.
-message ResticCredentialValidRequest {}
+message ResticCredentialValidRequest {
+}
 
 // ResticCredentialResponse contains information about the validity of the restic credentials from etcd.
 message ResticCredentialResponse {

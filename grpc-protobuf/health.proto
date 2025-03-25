@@ -16,11 +16,12 @@ message DoguHealthRequest {
 }
 
 // DoguHealthListRequest contains the data which are used to retrieve health information about all dogus.
-message DoguHealthAllRequest {}
+message DoguHealthAllRequest {
+}
 
 // DoguHealthListRequest contains the data which are used to retrieve health information about specific dogus.
 message DoguHealthListRequest {
-  repeated string dogus = 1;
+  repeated string doguses = 1;
 }
 
 message DoguHealthCheck {
@@ -48,7 +49,8 @@ message DoguHealthResponse {
   repeated DoguHealthCheck results = 5;
 }
 
-// DoguHealthListResponse contains health information about the all installed dogus and the status of the services answer.
+// DoguHealthListResponse contains health information about the all installed dogus
+// and the status of the services answer.
 message DoguHealthMapResponse {
   // all_healthy indicates if all installed dogus have passed the available checks successfully.
   bool all_healthy = 1;

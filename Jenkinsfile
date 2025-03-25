@@ -34,6 +34,15 @@ node('docker') {
             checkout scm
         }
 
+        stage('Lint') {
+            new Docker(this)
+                .image("yoheimuta/protolint:0.53.0")
+                .mountJenkinsUser()
+                .inside("--volume ${WORKSPACE}:/workspace -w /workspace") {
+                    sh "protolint lint grpc-protobuf"
+                }
+        }
+
         if (gitflow.isReleaseBranch()) {
             String releaseVersion = gitWrapper.getSimpleBranchName()
             String version = makefile.getVersion()
