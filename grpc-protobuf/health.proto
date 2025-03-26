@@ -21,7 +21,8 @@ message DoguHealthAllRequest {
 
 // DoguHealthListRequest contains the data which are used to retrieve health information about specific dogus.
 message DoguHealthListRequest {
-  repeated string doguses = 1;
+  // protolint:disable:next REPEATED_FIELD_NAMES_PLURALIZED
+  repeated string dogus = 1;
 }
 
 message DoguHealthCheck {
