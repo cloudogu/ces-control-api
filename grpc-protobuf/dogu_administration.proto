@@ -26,7 +26,8 @@ message DoguListRequest {
 
 message DoguListResponse {
   // list of dogus
-  repeated Dogu doguses = 1;
+  // protolint:disable:next REPEATED_FIELD_NAMES_PLURALIZED
+  repeated Dogu dogus = 1;
 }
 
 message DoguAdministrationRequest{

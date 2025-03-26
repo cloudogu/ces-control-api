@@ -69,7 +69,8 @@ message LegacySupportArchiveRequest {
 
   // CollectLogsFromTheseDogus must be a list of dogus. Only the logs of these dogus are collected
   // all other dogu logs are skipped
-  repeated string collect_logs_from_these_doguses = 9;
+  // protolint:disable:next REPEATED_FIELD_NAMES_PLURALIZED
+  repeated string collect_logs_from_these_dogus = 9;
 
   // CollectCesappLog defines whether the cesapp logfile should be collected (true) or not (false).
   bool collect_cesapp_log = 10;
