@@ -1,6 +1,7 @@
 syntax = "proto3";
 
-package doguadministration;
+// protolint:disable:next PACKAGE_NAME_LOWER_CASE
+package doguAdministration;
 
 import "response.proto";
 

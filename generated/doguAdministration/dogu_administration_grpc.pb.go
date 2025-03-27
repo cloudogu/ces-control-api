@@ -45,7 +45,7 @@ func NewDoguAdministrationClient(cc grpc.ClientConnInterface) DoguAdministration
 
 func (c *doguAdministrationClient) GetDoguList(ctx context.Context, in *DoguListRequest, opts ...grpc.CallOption) (*DoguListResponse, error) {
 	out := new(DoguListResponse)
-	err := c.cc.Invoke(ctx, "/doguadministration.DoguAdministration/GetDoguList", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/doguAdministration.DoguAdministration/GetDoguList", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -54,7 +54,7 @@ func (c *doguAdministrationClient) GetDoguList(ctx context.Context, in *DoguList
 
 func (c *doguAdministrationClient) GetBlueprintId(ctx context.Context, in *DoguBlueprinitIdRequest, opts ...grpc.CallOption) (*DoguBlueprintIdResponse, error) {
 	out := new(DoguBlueprintIdResponse)
-	err := c.cc.Invoke(ctx, "/doguadministration.DoguAdministration/GetBlueprintId", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/doguAdministration.DoguAdministration/GetBlueprintId", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -63,7 +63,7 @@ func (c *doguAdministrationClient) GetBlueprintId(ctx context.Context, in *DoguB
 
 func (c *doguAdministrationClient) StartDogu(ctx context.Context, in *DoguAdministrationRequest, opts ...grpc.CallOption) (*types.BasicResponse, error) {
 	out := new(types.BasicResponse)
-	err := c.cc.Invoke(ctx, "/doguadministration.DoguAdministration/StartDogu", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/doguAdministration.DoguAdministration/StartDogu", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -72,7 +72,7 @@ func (c *doguAdministrationClient) StartDogu(ctx context.Context, in *DoguAdmini
 
 func (c *doguAdministrationClient) StopDogu(ctx context.Context, in *DoguAdministrationRequest, opts ...grpc.CallOption) (*types.BasicResponse, error) {
 	out := new(types.BasicResponse)
-	err := c.cc.Invoke(ctx, "/doguadministration.DoguAdministration/StopDogu", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/doguAdministration.DoguAdministration/StopDogu", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -81,7 +81,7 @@ func (c *doguAdministrationClient) StopDogu(ctx context.Context, in *DoguAdminis
 
 func (c *doguAdministrationClient) RestartDogu(ctx context.Context, in *DoguAdministrationRequest, opts ...grpc.CallOption) (*types.BasicResponse, error) {
 	out := new(types.BasicResponse)
-	err := c.cc.Invoke(ctx, "/doguadministration.DoguAdministration/RestartDogu", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/doguAdministration.DoguAdministration/RestartDogu", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -147,7 +147,7 @@ func _DoguAdministration_GetDoguList_Handler(srv interface{}, ctx context.Contex
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/doguadministration.DoguAdministration/GetDoguList",
+		FullMethod: "/doguAdministration.DoguAdministration/GetDoguList",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DoguAdministrationServer).GetDoguList(ctx, req.(*DoguListRequest))
@@ -165,7 +165,7 @@ func _DoguAdministration_GetBlueprintId_Handler(srv interface{}, ctx context.Con
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/doguadministration.DoguAdministration/GetBlueprintId",
+		FullMethod: "/doguAdministration.DoguAdministration/GetBlueprintId",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DoguAdministrationServer).GetBlueprintId(ctx, req.(*DoguBlueprinitIdRequest))
@@ -183,7 +183,7 @@ func _DoguAdministration_StartDogu_Handler(srv interface{}, ctx context.Context,
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/doguadministration.DoguAdministration/StartDogu",
+		FullMethod: "/doguAdministration.DoguAdministration/StartDogu",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DoguAdministrationServer).StartDogu(ctx, req.(*DoguAdministrationRequest))
@@ -201,7 +201,7 @@ func _DoguAdministration_StopDogu_Handler(srv interface{}, ctx context.Context, 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/doguadministration.DoguAdministration/StopDogu",
+		FullMethod: "/doguAdministration.DoguAdministration/StopDogu",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DoguAdministrationServer).StopDogu(ctx, req.(*DoguAdministrationRequest))
@@ -219,7 +219,7 @@ func _DoguAdministration_RestartDogu_Handler(srv interface{}, ctx context.Contex
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/doguadministration.DoguAdministration/RestartDogu",
+		FullMethod: "/doguAdministration.DoguAdministration/RestartDogu",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DoguAdministrationServer).RestartDogu(ctx, req.(*DoguAdministrationRequest))
@@ -231,7 +231,7 @@ func _DoguAdministration_RestartDogu_Handler(srv interface{}, ctx context.Contex
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var DoguAdministration_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "doguadministration.DoguAdministration",
+	ServiceName: "doguAdministration.DoguAdministration",
 	HandlerType: (*DoguAdministrationServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
