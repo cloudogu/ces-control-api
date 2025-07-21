@@ -52,12 +52,14 @@ message DoguLogMessage {
 }
 
 // LogLevel defines values which control the logging in decreasing verbosity.
+// protolint:disable ENUM_FIELD_NAMES_PREFIX ENUM_FIELD_NAMES_ZERO_VALUE_END_WITH
 enum LogLevel {
   ERROR = 0;
   WARN = 1;
   INFO = 2;
   DEBUG = 3;
 }
+// protolint:enable ENUM_FIELD_NAMES_PREFIX ENUM_FIELD_NAMES_ZERO_VALUE_END_WITH
 
 // LogLevelRequest is the request send to change to log level of a dogu.
 message LogLevelRequest {
