@@ -27,9 +27,10 @@ message CommonSupportArchiveRequest {
 message ExcludedContents {
   bool system_state = 1;
   bool sensitive_data = 2;
-  bool logs_and_events = 3;
-  bool volume_info = 4;
-  bool system_info = 5;
+  bool logs = 3;
+  bool events = 4;
+  bool volume_info = 5;
+  bool system_info = 6;
 }
 
 message LoggingConfig {
