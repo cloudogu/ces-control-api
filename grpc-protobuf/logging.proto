@@ -53,10 +53,10 @@ message DoguLogMessage {
 
 // LogLevel defines values which control the logging in decreasing verbosity.
 enum LogLevel {
-  LOG_LEVEL_ERROR_UNSPECIFIED = 0;
-  LOG_LEVEL_WARN = 1;
-  LOG_LEVEL_INFO = 2;
-  LOG_LEVEL_DEBUG = 3;
+  ERROR = 0;
+  WARN = 1;
+  INFO = 2;
+  DEBUG = 3;
 }
 
 // LogLevelRequest is the request send to change to log level of a dogu.
