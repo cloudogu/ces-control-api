@@ -21,7 +21,7 @@ message CreateSupportArchiveRequest {
 
 message CommonSupportArchiveRequest {
   ExcludedContents excluded_contents = 1;
-  LoggingConfig logging_config = 2;
+  ContentTimeframe content_timeframe = 2;
 }
 
 message ExcludedContents {
@@ -33,7 +33,7 @@ message ExcludedContents {
   bool system_info = 6;
 }
 
-message LoggingConfig {
+message ContentTimeframe {
   optional google.protobuf.Timestamp start_date_time = 1;
   optional google.protobuf.Timestamp end_date_time = 2;
 }

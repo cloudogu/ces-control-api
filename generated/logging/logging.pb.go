@@ -24,6 +24,7 @@ const (
 )
 
 // LogLevel defines values which control the logging in decreasing verbosity.
+// protolint:disable ENUM_FIELD_NAMES_PREFIX ENUM_FIELD_NAMES_ZERO_VALUE_END_WITH
 type LogLevel int32
 
 const (
