@@ -114,6 +114,7 @@ type DoguHealthListRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
+	// protolint:disable:next REPEATED_FIELD_NAMES_PLURALIZED
 	Dogus []string `protobuf:"bytes,1,rep,name=dogus,proto3" json:"dogus,omitempty"`
 }
 
@@ -316,7 +317,8 @@ func (x *DoguHealthResponse) GetResults() []*DoguHealthCheck {
 	return nil
 }
 
-// DoguHealthListResponse contains health information about the all installed dogus and the status of the services answer.
+// DoguHealthListResponse contains health information about the all installed dogus
+// and the status of the services answer.
 type DoguHealthMapResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+package maintenance;
+
+import "google/protobuf/timestamp.proto";
+import "response.proto";
+
+option go_package = "github.com/cloudogu/ces-control-api/generated/maintenance";
+
+// The SupportArchive service provides endpoints to create the support archive.
+service SupportArchive {
+  rpc Create(CreateSupportArchiveRequest) returns (stream types.ChunkedDataResponse);
+}
+
+message CreateSupportArchiveRequest {
+  oneof environment {
+    LegacySupportArchiveRequest legacy = 1 [deprecated = true];
+    CommonSupportArchiveRequest common = 2;
+  }
+}
+
+message CommonSupportArchiveRequest {
+  ExcludedContents excluded_contents = 1;
+  ContentTimeframe content_timeframe = 2;
+}
+
+message ExcludedContents {
+  bool system_state = 1;
+  bool sensitive_data = 2;
+  bool logs = 3;
+  bool events = 4;
+  bool volume_info = 5;
+  bool system_info = 6;
+}
+
+message ContentTimeframe {
+  optional google.protobuf.Timestamp start_date_time = 1;
+  optional google.protobuf.Timestamp end_date_time = 2;
+}
+
+message LegacySupportArchiveRequest {
+  // CollectEtcd defines whether etcd keys/values should be contained in the final archive (true) or nor (false)
+  bool collect_etcd = 1;
+
+  // CollectOsInformation defines whether information about soft- and hardware should be contained
+  // in the final archive (true) or nor (false)
+  bool collect_os_information = 2;
+
+  // CollectEnvironment defines whether the environment variables should be contained
+  // in the final archive (true) or nor (false)
+  bool collect_environment = 3;
+
+  // CollectDoguStatusInformation defines whether information about installed dogus should be contained
+  // in the final archive (true) or nor (false)
+  bool collect_dogu_status_information = 4;
+
+  // CollectProcessInformation defines whether the Process and service status should be contained
+  // in the final archive (true) or nor (false)
+  bool collect_process_information = 5;
+
+  // CollectVolumeInformation defines whether the volume information should be contained
+  // in the final archive (true) or nor (false)
+  bool collect_volume_information = 6;
+
+  // ExcludedEtcdKeys is a list of etcd keys which should not be included in the final archive.
+  repeated string excluded_etcd_keys = 7;
+
+  // FailFast defines whether the archive collection should fail at the first error (true) or not (false).
+  bool fail_fast = 8;
+
+  // CollectLogsFromTheseDogus must be a list of dogus. Only the logs of these dogus are collected
+  // all other dogu logs are skipped
+  // protolint:disable:next REPEATED_FIELD_NAMES_PLURALIZED
+  repeated string collect_logs_from_these_dogus = 9;
+
+  // CollectCesappLog defines whether the cesapp logfile should be collected (true) or not (false).
+  bool collect_cesapp_log = 10;
+
+  // CollectCesappdLog defines whether the cesappd logfile should be collected (true) or not (false).
+  bool collect_cesappd_log = 11;
+
+  // CollectSyslog defines whether the syslog logfile should be collected (true) or not (false).
+  bool collect_syslog = 12;
+
+  // CollectAptLog defines whether the apt logfiles should be collected (true) or not (false).
+  bool collect_apt_log = 13;
+
+  // CollectBackupWatcherLog defines whether the backup-watcher logfile should be collected (true) or not (false).
+  bool collect_backup_watcher_log = 14;
+}
