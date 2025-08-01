@@ -1,9 +1,12 @@
 syntax = "proto3";
+
 package logging;
-option go_package = "github.com/cloudogu/ces-control-api/generated/logging";
-import 'response.proto';
-import "google/protobuf/timestamp.proto";
+
 import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "response.proto";
+
+option go_package = "github.com/cloudogu/ces-control-api/generated/logging";
 
 service DoguLogMessages {
   // GetForDogu loads the logs for the given dogu. The Response is a zip-file containing the log-file.
@@ -30,7 +33,8 @@ message DoguLogMessageRequest {
 message DoguLogMessageQueryRequest {
   // dogu_name contains the name of the dogu for which log lines should be returned in the response. Must not be empty.
   string dogu_name = 1;
-  // start_date start datetime of the first log message to be retrieved. Optional, if empty is set to 30 days before the end_date.
+  // start_date start datetime of the first log message to be retrieved.
+  // Optional, if empty is set to 30 days before the end_date.
   optional google.protobuf.Timestamp start_date = 3;
   // end_date end datetime of the last log message to be retrieved. Optional, if empty is set to current date.
   optional google.protobuf.Timestamp end_date = 4;
@@ -48,12 +52,14 @@ message DoguLogMessage {
 }
 
 // LogLevel defines values which control the logging in decreasing verbosity.
+// protolint:disable ENUM_FIELD_NAMES_PREFIX ENUM_FIELD_NAMES_ZERO_VALUE_END_WITH
 enum LogLevel {
   ERROR = 0;
   WARN = 1;
   INFO = 2;
   DEBUG = 3;
 }
+// protolint:enable ENUM_FIELD_NAMES_PREFIX ENUM_FIELD_NAMES_ZERO_VALUE_END_WITH
 
 // LogLevelRequest is the request send to change to log level of a dogu.
 message LogLevelRequest {

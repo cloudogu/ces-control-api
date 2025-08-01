@@ -1,8 +1,8 @@
 # Set these to the desired values
 ARTIFACT_ID=ces-control-api
 VERSION=1.4.0
-GOTAG=1.22
-LINT_VERSION=v1.53.2
+GOTAG=1.24.1
+LINT_VERSION=v2.0.1
 STAGE?=production
 LOG_LEVEL?=info
 
@@ -13,7 +13,7 @@ SHELL = /usr/bin/env bash -o pipefail
 ## Image URL to use all building/pushing image targets
 IMAGE?=cloudogu/${ARTIFACT_ID}:${VERSION}
 
-MAKEFILES_VERSION=9.0.4
+MAKEFILES_VERSION=9.8.0
 .DEFAULT_GOAL:=default
 GENERATION_TARGET_DIR=generated
 GENERATION_SOURCE_DIR=grpc-protobuf
