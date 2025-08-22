@@ -23,14 +23,14 @@ message GetAllBackupsRequest {
 }
 
 message GetAllBackupsResponse {
-  repeated BackupResponse backup = 1;
+  repeated BackupResponse backups = 1;
 }
 
 message GetAllRestoresRequest {
 }
 
 message GetAllRestoresResponse {
-  repeated RestoreResponse restore = 1;
+  repeated RestoreResponse restores = 1;
 }
 
 
