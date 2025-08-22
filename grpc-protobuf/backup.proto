@@ -8,6 +8,10 @@ service BackupManagement {
   rpc LastSuccessful(LastSuccessfulBackupRequest) returns (BackupResponse);
   // ResticCredValid retrieves information about the validity of the restic credentials from etcd
   rpc ResticCredValid(ResticCredentialValidRequest) returns (ResticCredentialResponse);
+  // AllBackups retrieves all Backups in the system
+  rpc AllBackups(GetAllBackupsRequest) returns (GetAllBackupsResponse);
+  // AllRestores retrieves all Restores in the system
+  rpc AllRestores(GetAllRestoresRequest) returns (GetAllRestoresResponse);
 }
 
 // LastSuccessfulBackupRequest contains the data which are used to retrieve information about the last successfully
@@ -15,7 +19,22 @@ service BackupManagement {
 message LastSuccessfulBackupRequest {
 }
 
-// LastBackupResponse contains information about the last successfully created backup.
+message GetAllBackupsRequest {
+}
+
+message GetAllBackupsResponse {
+  repeated BackupResponse backup = 1;
+}
+
+message GetAllRestoresRequest {
+}
+
+message GetAllRestoresResponse {
+  repeated RestoreResponse restore = 1;
+}
+
+
+// BackupResponse contains information about a created backup.
 message BackupResponse {
   // id contains the id of the backup.
   string id = 1;
@@ -29,7 +48,25 @@ message BackupResponse {
   bool success = 5;
   // error_message contains a possible reason if the backup was not successful.
   string error_message = 6;
+  // current_version indicates if the backup was made on the current blueprint id
+  bool current_version = 7;
 }
+
+message RestoreResponse {
+  // id contains the id of the backup associated with the restore
+  string backup_id = 1;
+  // start_time contains the time when the restore was started.
+  string start_time = 2;
+  // end_time contains the time when the restore process has ended.
+  string end_time = 3;
+  // type provides information about the backup type associated with the restore.
+  string backup_type = 4;
+  // error_message contains a possible reason if the backup was not successful.
+  string error_message = 5;
+  // blueprint_id indicates the blueprint id of the backup the restore is based on
+  bool blueprint_id = 6;
+}
+
 
 // ResticCredentialValidRequest contains the data which are used to retrieve information about validity of the restic
 // repo credentials entered into etcd.
