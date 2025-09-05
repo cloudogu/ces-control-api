@@ -58,7 +58,7 @@ message RestoreResponse {
   // success indicates if the restore was successful.
   bool success = 4;
   // blueprint_id indicates the blueprint id of the backup the restore is based on
-  bool blueprint_id = 5;
+  string blueprint_id = 5;
 }
 
 
