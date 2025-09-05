@@ -55,8 +55,8 @@ message RestoreResponse {
   string start_time = 2;
   // end_time contains the time when the restore process has ended.
   string end_time = 3;
-  // type provides information about the backup type associated with the restore.
-  string backup_type = 4;
+  // success indicates if the restore was successful.
+  bool success = 4;
   // blueprint_id indicates the blueprint id of the backup the restore is based on
   bool blueprint_id = 5;
 }
