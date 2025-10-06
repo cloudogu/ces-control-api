@@ -26,12 +26,16 @@ type BackupManagementClient interface {
 	LastSuccessful(ctx context.Context, in *LastSuccessfulBackupRequest, opts ...grpc.CallOption) (*BackupResponse, error)
 	// ResticCredValid retrieves information about the validity of the restic credentials from etcd
 	ResticCredValid(ctx context.Context, in *ResticCredentialValidRequest, opts ...grpc.CallOption) (*ResticCredentialResponse, error)
+	// AllBackups retrieves all Backups in the system
+	AllBackups(ctx context.Context, in *GetAllBackupsRequest, opts ...grpc.CallOption) (*GetAllBackupsResponse, error)
+	// AllRestores retrieves all Restores in the system
+	AllRestores(ctx context.Context, in *GetAllRestoresRequest, opts ...grpc.CallOption) (*GetAllRestoresResponse, error)
 	// GetSchedule retrieves the backup schedule as a cron expression.
 	GetSchedule(ctx context.Context, in *GetBackupScheduleRequest, opts ...grpc.CallOption) (*GetBackupScheduleResponse, error)
 	// SetSchedule sets the backup schedule as a cron expression.
 	SetSchedule(ctx context.Context, in *SetBackupScheduleRequest, opts ...grpc.CallOption) (*SetBackupScheduleResponse, error)
 	// GetRetentionPolicy retrieves the current backup retention policy.
-	GetRetentionPolicy(ctx context.Context, in *RetentionPolicyRequest, opts ...grpc.CallOption) (*RetentionPolicyResponse, error)
+	GetRetentionPolicy(ctx context.Context, in *GetRetentionPolicyRequest, opts ...grpc.CallOption) (*GetRetentionPolicyResponse, error)
 }
 
 type backupManagementClient struct {
@@ -60,6 +64,24 @@ func (c *backupManagementClient) ResticCredValid(ctx context.Context, in *Restic
 	return out, nil
 }
 
+func (c *backupManagementClient) AllBackups(ctx context.Context, in *GetAllBackupsRequest, opts ...grpc.CallOption) (*GetAllBackupsResponse, error) {
+	out := new(GetAllBackupsResponse)
+	err := c.cc.Invoke(ctx, "/backup.BackupManagement/AllBackups", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *backupManagementClient) AllRestores(ctx context.Context, in *GetAllRestoresRequest, opts ...grpc.CallOption) (*GetAllRestoresResponse, error) {
+	out := new(GetAllRestoresResponse)
+	err := c.cc.Invoke(ctx, "/backup.BackupManagement/AllRestores", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *backupManagementClient) GetSchedule(ctx context.Context, in *GetBackupScheduleRequest, opts ...grpc.CallOption) (*GetBackupScheduleResponse, error) {
 	out := new(GetBackupScheduleResponse)
 	err := c.cc.Invoke(ctx, "/backup.BackupManagement/GetSchedule", in, out, opts...)
@@ -78,8 +100,8 @@ func (c *backupManagementClient) SetSchedule(ctx context.Context, in *SetBackupS
 	return out, nil
 }
 
-func (c *backupManagementClient) GetRetentionPolicy(ctx context.Context, in *RetentionPolicyRequest, opts ...grpc.CallOption) (*RetentionPolicyResponse, error) {
-	out := new(RetentionPolicyResponse)
+func (c *backupManagementClient) GetRetentionPolicy(ctx context.Context, in *GetRetentionPolicyRequest, opts ...grpc.CallOption) (*GetRetentionPolicyResponse, error) {
+	out := new(GetRetentionPolicyResponse)
 	err := c.cc.Invoke(ctx, "/backup.BackupManagement/GetRetentionPolicy", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -95,12 +117,16 @@ type BackupManagementServer interface {
 	LastSuccessful(context.Context, *LastSuccessfulBackupRequest) (*BackupResponse, error)
 	// ResticCredValid retrieves information about the validity of the restic credentials from etcd
 	ResticCredValid(context.Context, *ResticCredentialValidRequest) (*ResticCredentialResponse, error)
+	// AllBackups retrieves all Backups in the system
+	AllBackups(context.Context, *GetAllBackupsRequest) (*GetAllBackupsResponse, error)
+	// AllRestores retrieves all Restores in the system
+	AllRestores(context.Context, *GetAllRestoresRequest) (*GetAllRestoresResponse, error)
 	// GetSchedule retrieves the backup schedule as a cron expression.
 	GetSchedule(context.Context, *GetBackupScheduleRequest) (*GetBackupScheduleResponse, error)
 	// SetSchedule sets the backup schedule as a cron expression.
 	SetSchedule(context.Context, *SetBackupScheduleRequest) (*SetBackupScheduleResponse, error)
 	// GetRetentionPolicy retrieves the current backup retention policy.
-	GetRetentionPolicy(context.Context, *RetentionPolicyRequest) (*RetentionPolicyResponse, error)
+	GetRetentionPolicy(context.Context, *GetRetentionPolicyRequest) (*GetRetentionPolicyResponse, error)
 	mustEmbedUnimplementedBackupManagementServer()
 }
 
@@ -114,13 +140,19 @@ func (UnimplementedBackupManagementServer) LastSuccessful(context.Context, *Last
 func (UnimplementedBackupManagementServer) ResticCredValid(context.Context, *ResticCredentialValidRequest) (*ResticCredentialResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ResticCredValid not implemented")
 }
+func (UnimplementedBackupManagementServer) AllBackups(context.Context, *GetAllBackupsRequest) (*GetAllBackupsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AllBackups not implemented")
+}
+func (UnimplementedBackupManagementServer) AllRestores(context.Context, *GetAllRestoresRequest) (*GetAllRestoresResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AllRestores not implemented")
+}
 func (UnimplementedBackupManagementServer) GetSchedule(context.Context, *GetBackupScheduleRequest) (*GetBackupScheduleResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSchedule not implemented")
 }
 func (UnimplementedBackupManagementServer) SetSchedule(context.Context, *SetBackupScheduleRequest) (*SetBackupScheduleResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetSchedule not implemented")
 }
-func (UnimplementedBackupManagementServer) GetRetentionPolicy(context.Context, *RetentionPolicyRequest) (*RetentionPolicyResponse, error) {
+func (UnimplementedBackupManagementServer) GetRetentionPolicy(context.Context, *GetRetentionPolicyRequest) (*GetRetentionPolicyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRetentionPolicy not implemented")
 }
 func (UnimplementedBackupManagementServer) mustEmbedUnimplementedBackupManagementServer() {}
@@ -172,6 +204,42 @@ func _BackupManagement_ResticCredValid_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BackupManagement_AllBackups_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAllBackupsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupManagementServer).AllBackups(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/backup.BackupManagement/AllBackups",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupManagementServer).AllBackups(ctx, req.(*GetAllBackupsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BackupManagement_AllRestores_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAllRestoresRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupManagementServer).AllRestores(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/backup.BackupManagement/AllRestores",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupManagementServer).AllRestores(ctx, req.(*GetAllRestoresRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _BackupManagement_GetSchedule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetBackupScheduleRequest)
 	if err := dec(in); err != nil {
@@ -209,7 +277,7 @@ func _BackupManagement_SetSchedule_Handler(srv interface{}, ctx context.Context,
 }
 
 func _BackupManagement_GetRetentionPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RetentionPolicyRequest)
+	in := new(GetRetentionPolicyRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -221,7 +289,7 @@ func _BackupManagement_GetRetentionPolicy_Handler(srv interface{}, ctx context.C
 		FullMethod: "/backup.BackupManagement/GetRetentionPolicy",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BackupManagementServer).GetRetentionPolicy(ctx, req.(*RetentionPolicyRequest))
+		return srv.(BackupManagementServer).GetRetentionPolicy(ctx, req.(*GetRetentionPolicyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -240,6 +308,14 @@ var BackupManagement_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ResticCredValid",
 			Handler:    _BackupManagement_ResticCredValid_Handler,
+		},
+		{
+			MethodName: "AllBackups",
+			Handler:    _BackupManagement_AllBackups_Handler,
+		},
+		{
+			MethodName: "AllRestores",
+			Handler:    _BackupManagement_AllRestores_Handler,
 		},
 		{
 			MethodName: "GetSchedule",
