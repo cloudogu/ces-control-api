@@ -8,6 +8,12 @@ service BackupManagement {
   rpc LastSuccessful(LastSuccessfulBackupRequest) returns (BackupResponse);
   // ResticCredValid retrieves information about the validity of the restic credentials from etcd
   rpc ResticCredValid(ResticCredentialValidRequest) returns (ResticCredentialResponse);
+  // GetSchedule retrieves the backup schedule as a cron expression.
+  rpc GetSchedule(GetBackupScheduleRequest) returns (GetBackupScheduleResponse);
+  // SetSchedule sets the backup schedule as a cron expression.
+  rpc SetSchedule(SetBackupScheduleRequest) returns (SetBackupScheduleResponse);
+  // GetRetentionPolicy retrieves the current backup retention policy.
+  rpc GetRetentionPolicy(RetentionPolicyRequest) returns (RetentionPolicyResponse);
 }
 
 // LastSuccessfulBackupRequest contains the data which are used to retrieve information about the last successfully
@@ -40,4 +46,46 @@ message ResticCredentialValidRequest {
 message ResticCredentialResponse {
   // valid indicates if the restic credentials from etcd are correct
   bool valid = 1;
+}
+
+// BackupScheduleRequest contains the data which are used to retrieve the backup schedule.
+message GetBackupScheduleRequest {
+}
+
+// BackupScheduleResponse contains the backup schedule as a cron expression.
+message GetBackupScheduleResponse {
+  // schedule contains the backup schedule as a cron expression string.
+  string schedule = 1;
+}
+
+// SetBackupScheduleRequest contains the data which are used to set the backup schedule.
+message SetBackupScheduleRequest {
+  // schedule contains the backup schedule as a cron expression string to be set.
+  string schedule = 1;
+}
+
+// SetBackupScheduleResponse contains the result of setting the backup schedule.
+message SetBackupScheduleResponse {
+}
+
+// RetentionPolicy defines the available backup retention policies.
+enum RetentionPolicy {
+  // KeepAll keeps all backups.
+  KeepAll = 0;
+  // RemoveAllButKeepLatest removes all backups but keeps the latest one.
+  RemoveAllButKeepLatest = 1;
+  // KeepLastSevenDays keeps backups from the last seven days.
+  KeepLastSevenDays = 2;
+  // KeepLast7DaysOldestOf1Month1Quarter1HalfYear1Year keeps backups from the last 7 days and the oldest backup of the last month, quarter, half year, and year.
+  KeepLast7DaysOldestOf1Month1Quarter1HalfYear1Year = 3;
+}
+
+// RetentionPolicyRequest contains the data which are used to retrieve the retention policy.
+message RetentionPolicyRequest {
+}
+
+// RetentionPolicyResponse contains the current backup retention policy.
+message RetentionPolicyResponse {
+  // policy contains the current retention policy.
+  RetentionPolicy policy = 1;
 }
