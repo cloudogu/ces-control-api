@@ -26,6 +26,8 @@ type BackupManagementClient interface {
 	LastSuccessful(ctx context.Context, in *LastSuccessfulBackupRequest, opts ...grpc.CallOption) (*BackupResponse, error)
 	// ResticCredValid retrieves information about the validity of the restic credentials from etcd
 	ResticCredValid(ctx context.Context, in *ResticCredentialValidRequest, opts ...grpc.CallOption) (*ResticCredentialResponse, error)
+	// CreateBackup creates a new backup
+	CreateBackup(ctx context.Context, in *CreateBackupRequest, opts ...grpc.CallOption) (*CreateBackupResponse, error)
 }
 
 type backupManagementClient struct {
@@ -54,6 +56,15 @@ func (c *backupManagementClient) ResticCredValid(ctx context.Context, in *Restic
 	return out, nil
 }
 
+func (c *backupManagementClient) CreateBackup(ctx context.Context, in *CreateBackupRequest, opts ...grpc.CallOption) (*CreateBackupResponse, error) {
+	out := new(CreateBackupResponse)
+	err := c.cc.Invoke(ctx, "/backup.BackupManagement/CreateBackup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BackupManagementServer is the server API for BackupManagement service.
 // All implementations must embed UnimplementedBackupManagementServer
 // for forward compatibility
@@ -62,6 +73,8 @@ type BackupManagementServer interface {
 	LastSuccessful(context.Context, *LastSuccessfulBackupRequest) (*BackupResponse, error)
 	// ResticCredValid retrieves information about the validity of the restic credentials from etcd
 	ResticCredValid(context.Context, *ResticCredentialValidRequest) (*ResticCredentialResponse, error)
+	// CreateBackup creates a new backup
+	CreateBackup(context.Context, *CreateBackupRequest) (*CreateBackupResponse, error)
 	mustEmbedUnimplementedBackupManagementServer()
 }
 
@@ -74,6 +87,9 @@ func (UnimplementedBackupManagementServer) LastSuccessful(context.Context, *Last
 }
 func (UnimplementedBackupManagementServer) ResticCredValid(context.Context, *ResticCredentialValidRequest) (*ResticCredentialResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ResticCredValid not implemented")
+}
+func (UnimplementedBackupManagementServer) CreateBackup(context.Context, *CreateBackupRequest) (*CreateBackupResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateBackup not implemented")
 }
 func (UnimplementedBackupManagementServer) mustEmbedUnimplementedBackupManagementServer() {}
 
@@ -124,6 +140,24 @@ func _BackupManagement_ResticCredValid_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BackupManagement_CreateBackup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateBackupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupManagementServer).CreateBackup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/backup.BackupManagement/CreateBackup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupManagementServer).CreateBackup(ctx, req.(*CreateBackupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // BackupManagement_ServiceDesc is the grpc.ServiceDesc for BackupManagement service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -138,6 +172,10 @@ var BackupManagement_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ResticCredValid",
 			Handler:    _BackupManagement_ResticCredValid_Handler,
+		},
+		{
+			MethodName: "CreateBackup",
+			Handler:    _BackupManagement_CreateBackup_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
