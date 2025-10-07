@@ -26,6 +26,10 @@ type BackupManagementClient interface {
 	LastSuccessful(ctx context.Context, in *LastSuccessfulBackupRequest, opts ...grpc.CallOption) (*BackupResponse, error)
 	// ResticCredValid retrieves information about the validity of the restic credentials from etcd
 	ResticCredValid(ctx context.Context, in *ResticCredentialValidRequest, opts ...grpc.CallOption) (*ResticCredentialResponse, error)
+	// AllBackups retrieves all Backups in the system
+	AllBackups(ctx context.Context, in *GetAllBackupsRequest, opts ...grpc.CallOption) (*GetAllBackupsResponse, error)
+	// AllRestores retrieves all Restores in the system
+	AllRestores(ctx context.Context, in *GetAllRestoresRequest, opts ...grpc.CallOption) (*GetAllRestoresResponse, error)
 	// CreateBackup creates a new backup
 	CreateBackup(ctx context.Context, in *CreateBackupRequest, opts ...grpc.CallOption) (*CreateBackupResponse, error)
 }
@@ -56,6 +60,24 @@ func (c *backupManagementClient) ResticCredValid(ctx context.Context, in *Restic
 	return out, nil
 }
 
+func (c *backupManagementClient) AllBackups(ctx context.Context, in *GetAllBackupsRequest, opts ...grpc.CallOption) (*GetAllBackupsResponse, error) {
+	out := new(GetAllBackupsResponse)
+	err := c.cc.Invoke(ctx, "/backup.BackupManagement/AllBackups", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *backupManagementClient) AllRestores(ctx context.Context, in *GetAllRestoresRequest, opts ...grpc.CallOption) (*GetAllRestoresResponse, error) {
+	out := new(GetAllRestoresResponse)
+	err := c.cc.Invoke(ctx, "/backup.BackupManagement/AllRestores", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *backupManagementClient) CreateBackup(ctx context.Context, in *CreateBackupRequest, opts ...grpc.CallOption) (*CreateBackupResponse, error) {
 	out := new(CreateBackupResponse)
 	err := c.cc.Invoke(ctx, "/backup.BackupManagement/CreateBackup", in, out, opts...)
@@ -73,6 +95,10 @@ type BackupManagementServer interface {
 	LastSuccessful(context.Context, *LastSuccessfulBackupRequest) (*BackupResponse, error)
 	// ResticCredValid retrieves information about the validity of the restic credentials from etcd
 	ResticCredValid(context.Context, *ResticCredentialValidRequest) (*ResticCredentialResponse, error)
+	// AllBackups retrieves all Backups in the system
+	AllBackups(context.Context, *GetAllBackupsRequest) (*GetAllBackupsResponse, error)
+	// AllRestores retrieves all Restores in the system
+	AllRestores(context.Context, *GetAllRestoresRequest) (*GetAllRestoresResponse, error)
 	// CreateBackup creates a new backup
 	CreateBackup(context.Context, *CreateBackupRequest) (*CreateBackupResponse, error)
 	mustEmbedUnimplementedBackupManagementServer()
@@ -87,6 +113,12 @@ func (UnimplementedBackupManagementServer) LastSuccessful(context.Context, *Last
 }
 func (UnimplementedBackupManagementServer) ResticCredValid(context.Context, *ResticCredentialValidRequest) (*ResticCredentialResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ResticCredValid not implemented")
+}
+func (UnimplementedBackupManagementServer) AllBackups(context.Context, *GetAllBackupsRequest) (*GetAllBackupsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AllBackups not implemented")
+}
+func (UnimplementedBackupManagementServer) AllRestores(context.Context, *GetAllRestoresRequest) (*GetAllRestoresResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AllRestores not implemented")
 }
 func (UnimplementedBackupManagementServer) CreateBackup(context.Context, *CreateBackupRequest) (*CreateBackupResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateBackup not implemented")
@@ -140,6 +172,42 @@ func _BackupManagement_ResticCredValid_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BackupManagement_AllBackups_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAllBackupsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupManagementServer).AllBackups(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/backup.BackupManagement/AllBackups",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupManagementServer).AllBackups(ctx, req.(*GetAllBackupsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BackupManagement_AllRestores_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAllRestoresRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupManagementServer).AllRestores(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/backup.BackupManagement/AllRestores",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupManagementServer).AllRestores(ctx, req.(*GetAllRestoresRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _BackupManagement_CreateBackup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateBackupRequest)
 	if err := dec(in); err != nil {
@@ -172,6 +240,14 @@ var BackupManagement_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ResticCredValid",
 			Handler:    _BackupManagement_ResticCredValid_Handler,
+		},
+		{
+			MethodName: "AllBackups",
+			Handler:    _BackupManagement_AllBackups_Handler,
+		},
+		{
+			MethodName: "AllRestores",
+			Handler:    _BackupManagement_AllRestores_Handler,
 		},
 		{
 			MethodName: "CreateBackup",
