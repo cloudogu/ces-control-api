@@ -12,9 +12,11 @@ service BackupManagement {
   rpc CreateBackup(CreateBackupRequest) returns (CreateBackupResponse);
 }
 
-message CreateBackupRequest {}
+message CreateBackupRequest {
+}
 
-message CreateBackupResponse {}
+message CreateBackupResponse {
+}
 
 // LastSuccessfulBackupRequest contains the data which are used to retrieve information about the last successfully
 // created backup.
