@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- [#14] Extend Backup api to get backups and restores
 - [#15] get & set backup-schedule
 - [#15] get retention-policy 
 
