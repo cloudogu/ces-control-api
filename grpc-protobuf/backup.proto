@@ -67,14 +67,10 @@ message RestoreResponse {
   string start_time = 2;
   // end_time contains the time when the restore process has ended.
   string end_time = 3;
-  // type provides information about the backup type.
-  // deprecated for multinode environments
-  string type = 4 [deprecated = true];
-  // success indicates if the backup was successful.
-  bool success = 5;
-  // error_message contains a possible reason if the backup was not successful.
-  // deprecated for multinode environments
-  string error_message = 6 [deprecated = true];
+  // success indicates if the restore was successful.
+  bool success = 4;
+  // blueprint_id indicates the blueprint id of the backup the restore is based on
+  string blueprint_id = 5;
 }
 
 // ResticCredentialValidRequest contains the data which are used to retrieve information about validity of the restic
