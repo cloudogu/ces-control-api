@@ -54,6 +54,8 @@ message BackupResponse {
   bool success = 5;
   // error_message contains a possible reason if the backup was not successful.
   string error_message = 6 [deprecated = true];
+  // current_version indicates if the backup was made on the current blueprint id
+  bool current_version = 7;
 }
 
 message RestoreResponse {
