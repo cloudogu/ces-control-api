@@ -12,6 +12,12 @@ service BackupManagement {
   rpc AllBackups(GetAllBackupsRequest) returns (GetAllBackupsResponse);
   // AllRestores retrieves all Restores in the system
   rpc AllRestores(GetAllRestoresRequest) returns (GetAllRestoresResponse);
+  // GetSchedule retrieves the backup schedule as a cron expression.
+  rpc GetSchedule(GetBackupScheduleRequest) returns (GetBackupScheduleResponse);
+  // SetSchedule sets the backup schedule as a cron expression.
+  rpc SetSchedule(SetBackupScheduleRequest) returns (SetBackupScheduleResponse);
+  // GetRetentionPolicy retrieves the current backup retention policy.
+  rpc GetRetentionPolicy(GetRetentionPolicyRequest) returns (GetRetentionPolicyResponse);
 }
 
 // LastSuccessfulBackupRequest contains the data which are used to retrieve information about the last successfully
@@ -75,4 +81,48 @@ message ResticCredentialValidRequest {
 message ResticCredentialResponse {
   // valid indicates if the restic credentials from etcd are correct
   bool valid = 1;
+}
+
+// BackupScheduleRequest contains the data which are used to retrieve the backup schedule.
+message GetBackupScheduleRequest {
+}
+
+// BackupScheduleResponse contains the backup schedule as a cron expression.
+message GetBackupScheduleResponse {
+  // schedule contains the backup schedule as a cron expression string.
+  string schedule = 1;
+}
+
+// SetBackupScheduleRequest contains the data which are used to set the backup schedule.
+message SetBackupScheduleRequest {
+  // schedule contains the backup schedule as a cron expression string to be set.
+  string schedule = 1;
+}
+
+// SetBackupScheduleResponse contains the result of setting the backup schedule.
+message SetBackupScheduleResponse {
+}
+
+// RetentionPolicy defines the available backup retention policies.
+enum RetentionPolicy {
+  RETENTION_POLICY_UNSPECIFIED = 0;
+  // RETENTION_POLICY_KEEP_ALL keeps all backups.
+  RETENTION_POLICY_KEEP_ALL = 1;
+  // RETENTION_POLICY_REMOVE_ALL_BUT_KEEP_LATEST removes all backups but keeps the latest one.
+  RETENTION_POLICY_REMOVE_ALL_BUT_KEEP_LATEST = 2;
+  // RETENTION_POLICY_KEEP_LAST_SEVEN_DAYS keeps backups from the last seven days.
+  RETENTION_POLICY_KEEP_LAST_SEVEN_DAYS = 3;
+  // RETENTION_POLICY_KEEP_LAST_7_DAYS_OLDEST_OF_1_MONTH_1_QUARTER_1_HALF_YEAR_1_YEAR keeps backups from the last 7 days
+  // and the oldest backup of the last month, quarter, half year, and year.
+  RETENTION_POLICY_KEEP_LAST_7_DAYS_OLDEST_OF_1_MONTH_1_QUARTER_1_HALF_YEAR_1_YEAR = 4;
+}
+
+// GetRetentionPolicyResponse contains the data which are used to retrieve the retention policy.
+message GetRetentionPolicyRequest {
+}
+
+// GetRetentionPolicyResponse contains the current backup retention policy.
+message GetRetentionPolicyResponse {
+  // policy contains the current retention policy.
+  RetentionPolicy policy = 1;
 }

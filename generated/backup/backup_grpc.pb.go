@@ -30,6 +30,12 @@ type BackupManagementClient interface {
 	AllBackups(ctx context.Context, in *GetAllBackupsRequest, opts ...grpc.CallOption) (*GetAllBackupsResponse, error)
 	// AllRestores retrieves all Restores in the system
 	AllRestores(ctx context.Context, in *GetAllRestoresRequest, opts ...grpc.CallOption) (*GetAllRestoresResponse, error)
+	// GetSchedule retrieves the backup schedule as a cron expression.
+	GetSchedule(ctx context.Context, in *GetBackupScheduleRequest, opts ...grpc.CallOption) (*GetBackupScheduleResponse, error)
+	// SetSchedule sets the backup schedule as a cron expression.
+	SetSchedule(ctx context.Context, in *SetBackupScheduleRequest, opts ...grpc.CallOption) (*SetBackupScheduleResponse, error)
+	// GetRetentionPolicy retrieves the current backup retention policy.
+	GetRetentionPolicy(ctx context.Context, in *GetRetentionPolicyRequest, opts ...grpc.CallOption) (*GetRetentionPolicyResponse, error)
 }
 
 type backupManagementClient struct {
@@ -76,6 +82,33 @@ func (c *backupManagementClient) AllRestores(ctx context.Context, in *GetAllRest
 	return out, nil
 }
 
+func (c *backupManagementClient) GetSchedule(ctx context.Context, in *GetBackupScheduleRequest, opts ...grpc.CallOption) (*GetBackupScheduleResponse, error) {
+	out := new(GetBackupScheduleResponse)
+	err := c.cc.Invoke(ctx, "/backup.BackupManagement/GetSchedule", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *backupManagementClient) SetSchedule(ctx context.Context, in *SetBackupScheduleRequest, opts ...grpc.CallOption) (*SetBackupScheduleResponse, error) {
+	out := new(SetBackupScheduleResponse)
+	err := c.cc.Invoke(ctx, "/backup.BackupManagement/SetSchedule", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *backupManagementClient) GetRetentionPolicy(ctx context.Context, in *GetRetentionPolicyRequest, opts ...grpc.CallOption) (*GetRetentionPolicyResponse, error) {
+	out := new(GetRetentionPolicyResponse)
+	err := c.cc.Invoke(ctx, "/backup.BackupManagement/GetRetentionPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BackupManagementServer is the server API for BackupManagement service.
 // All implementations must embed UnimplementedBackupManagementServer
 // for forward compatibility
@@ -88,6 +121,12 @@ type BackupManagementServer interface {
 	AllBackups(context.Context, *GetAllBackupsRequest) (*GetAllBackupsResponse, error)
 	// AllRestores retrieves all Restores in the system
 	AllRestores(context.Context, *GetAllRestoresRequest) (*GetAllRestoresResponse, error)
+	// GetSchedule retrieves the backup schedule as a cron expression.
+	GetSchedule(context.Context, *GetBackupScheduleRequest) (*GetBackupScheduleResponse, error)
+	// SetSchedule sets the backup schedule as a cron expression.
+	SetSchedule(context.Context, *SetBackupScheduleRequest) (*SetBackupScheduleResponse, error)
+	// GetRetentionPolicy retrieves the current backup retention policy.
+	GetRetentionPolicy(context.Context, *GetRetentionPolicyRequest) (*GetRetentionPolicyResponse, error)
 	mustEmbedUnimplementedBackupManagementServer()
 }
 
@@ -106,6 +145,15 @@ func (UnimplementedBackupManagementServer) AllBackups(context.Context, *GetAllBa
 }
 func (UnimplementedBackupManagementServer) AllRestores(context.Context, *GetAllRestoresRequest) (*GetAllRestoresResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AllRestores not implemented")
+}
+func (UnimplementedBackupManagementServer) GetSchedule(context.Context, *GetBackupScheduleRequest) (*GetBackupScheduleResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSchedule not implemented")
+}
+func (UnimplementedBackupManagementServer) SetSchedule(context.Context, *SetBackupScheduleRequest) (*SetBackupScheduleResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetSchedule not implemented")
+}
+func (UnimplementedBackupManagementServer) GetRetentionPolicy(context.Context, *GetRetentionPolicyRequest) (*GetRetentionPolicyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRetentionPolicy not implemented")
 }
 func (UnimplementedBackupManagementServer) mustEmbedUnimplementedBackupManagementServer() {}
 
@@ -192,6 +240,60 @@ func _BackupManagement_AllRestores_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BackupManagement_GetSchedule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetBackupScheduleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupManagementServer).GetSchedule(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/backup.BackupManagement/GetSchedule",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupManagementServer).GetSchedule(ctx, req.(*GetBackupScheduleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BackupManagement_SetSchedule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetBackupScheduleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupManagementServer).SetSchedule(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/backup.BackupManagement/SetSchedule",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupManagementServer).SetSchedule(ctx, req.(*SetBackupScheduleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BackupManagement_GetRetentionPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRetentionPolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupManagementServer).GetRetentionPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/backup.BackupManagement/GetRetentionPolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupManagementServer).GetRetentionPolicy(ctx, req.(*GetRetentionPolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // BackupManagement_ServiceDesc is the grpc.ServiceDesc for BackupManagement service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -214,6 +316,18 @@ var BackupManagement_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AllRestores",
 			Handler:    _BackupManagement_AllRestores_Handler,
+		},
+		{
+			MethodName: "GetSchedule",
+			Handler:    _BackupManagement_GetSchedule_Handler,
+		},
+		{
+			MethodName: "SetSchedule",
+			Handler:    _BackupManagement_SetSchedule_Handler,
+		},
+		{
+			MethodName: "GetRetentionPolicy",
+			Handler:    _BackupManagement_GetRetentionPolicy_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
