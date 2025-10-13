@@ -30,6 +30,8 @@ type BackupManagementClient interface {
 	AllBackups(ctx context.Context, in *GetAllBackupsRequest, opts ...grpc.CallOption) (*GetAllBackupsResponse, error)
 	// AllRestores retrieves all Restores in the system
 	AllRestores(ctx context.Context, in *GetAllRestoresRequest, opts ...grpc.CallOption) (*GetAllRestoresResponse, error)
+	// CreateRestore creates a new restore with the given backup.
+	CreateRestore(ctx context.Context, in *CreateRestoreRequest, opts ...grpc.CallOption) (*CreateRestoreResponse, error)
 	// GetSchedule retrieves the backup schedule as a cron expression.
 	GetSchedule(ctx context.Context, in *GetBackupScheduleRequest, opts ...grpc.CallOption) (*GetBackupScheduleResponse, error)
 	// SetSchedule sets the backup schedule as a cron expression.
@@ -82,6 +84,15 @@ func (c *backupManagementClient) AllRestores(ctx context.Context, in *GetAllRest
 	return out, nil
 }
 
+func (c *backupManagementClient) CreateRestore(ctx context.Context, in *CreateRestoreRequest, opts ...grpc.CallOption) (*CreateRestoreResponse, error) {
+	out := new(CreateRestoreResponse)
+	err := c.cc.Invoke(ctx, "/backup.BackupManagement/CreateRestore", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *backupManagementClient) GetSchedule(ctx context.Context, in *GetBackupScheduleRequest, opts ...grpc.CallOption) (*GetBackupScheduleResponse, error) {
 	out := new(GetBackupScheduleResponse)
 	err := c.cc.Invoke(ctx, "/backup.BackupManagement/GetSchedule", in, out, opts...)
@@ -121,6 +132,8 @@ type BackupManagementServer interface {
 	AllBackups(context.Context, *GetAllBackupsRequest) (*GetAllBackupsResponse, error)
 	// AllRestores retrieves all Restores in the system
 	AllRestores(context.Context, *GetAllRestoresRequest) (*GetAllRestoresResponse, error)
+	// CreateRestore creates a new restore with the given backup.
+	CreateRestore(context.Context, *CreateRestoreRequest) (*CreateRestoreResponse, error)
 	// GetSchedule retrieves the backup schedule as a cron expression.
 	GetSchedule(context.Context, *GetBackupScheduleRequest) (*GetBackupScheduleResponse, error)
 	// SetSchedule sets the backup schedule as a cron expression.
@@ -145,6 +158,9 @@ func (UnimplementedBackupManagementServer) AllBackups(context.Context, *GetAllBa
 }
 func (UnimplementedBackupManagementServer) AllRestores(context.Context, *GetAllRestoresRequest) (*GetAllRestoresResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AllRestores not implemented")
+}
+func (UnimplementedBackupManagementServer) CreateRestore(context.Context, *CreateRestoreRequest) (*CreateRestoreResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateRestore not implemented")
 }
 func (UnimplementedBackupManagementServer) GetSchedule(context.Context, *GetBackupScheduleRequest) (*GetBackupScheduleResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSchedule not implemented")
@@ -240,6 +256,24 @@ func _BackupManagement_AllRestores_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BackupManagement_CreateRestore_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateRestoreRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupManagementServer).CreateRestore(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/backup.BackupManagement/CreateRestore",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupManagementServer).CreateRestore(ctx, req.(*CreateRestoreRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _BackupManagement_GetSchedule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetBackupScheduleRequest)
 	if err := dec(in); err != nil {
@@ -316,6 +350,10 @@ var BackupManagement_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AllRestores",
 			Handler:    _BackupManagement_AllRestores_Handler,
+		},
+		{
+			MethodName: "CreateRestore",
+			Handler:    _BackupManagement_CreateRestore_Handler,
 		},
 		{
 			MethodName: "GetSchedule",
