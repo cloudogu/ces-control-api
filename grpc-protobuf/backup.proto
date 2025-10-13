@@ -12,6 +12,8 @@ service BackupManagement {
   rpc AllBackups(GetAllBackupsRequest) returns (GetAllBackupsResponse);
   // AllRestores retrieves all Restores in the system
   rpc AllRestores(GetAllRestoresRequest) returns (GetAllRestoresResponse);
+  // CreateRestore creates a new restore with the given backup.
+  rpc CreateRestore(CreateRestoreRequest) returns (CreateRestoreResponse);
   // GetSchedule retrieves the backup schedule as a cron expression.
   rpc GetSchedule(GetBackupScheduleRequest) returns (GetBackupScheduleResponse);
   // SetSchedule sets the backup schedule as a cron expression.
@@ -32,11 +34,26 @@ message GetAllBackupsResponse {
   repeated BackupResponse backups = 1;
 }
 
+message GetRestorableBackupsRequest {
+}
+
+message GetRestorableBackupsResponse {
+  repeated BackupResponse backups = 1;
+}
+
 message GetAllRestoresRequest {
 }
 
 message GetAllRestoresResponse {
   repeated RestoreResponse restores = 1;
+}
+
+message CreateRestoreRequest {
+  // id contains the id of the backup that should be restored
+  string backup_id = 1;
+}
+
+message CreateRestoreResponse {
 }
 
 
