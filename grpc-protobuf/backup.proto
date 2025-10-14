@@ -34,13 +34,6 @@ message GetAllBackupsResponse {
   repeated BackupResponse backups = 1;
 }
 
-message GetRestorableBackupsRequest {
-}
-
-message GetRestorableBackupsResponse {
-  repeated BackupResponse backups = 1;
-}
-
 message GetAllRestoresRequest {
 }
 
@@ -73,6 +66,8 @@ message BackupResponse {
   string error_message = 6 [deprecated = true];
   // current_version indicates if the backup was made on the current blueprint id
   bool current_version = 7;
+  // restorable indicates if the backup can be restored into the current system.
+  bool restorable = 8;
 }
 
 message RestoreResponse {
