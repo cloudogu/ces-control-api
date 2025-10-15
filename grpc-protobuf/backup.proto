@@ -58,8 +58,8 @@ message BackupResponse {
   string end_time = 3;
   // type provides information about the backup type.
   string type = 4 [deprecated = true];
-  // success indicates if the backup was successful.
-  bool success = 5;
+  // status contains the current backup status: in progress, failed, completed.
+  bool status = 5;
   // error_message contains a possible reason if the backup was not successful.
   string error_message = 6 [deprecated = true];
   // current_version indicates if the backup was made on the current blueprint id
