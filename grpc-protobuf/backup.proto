@@ -25,13 +25,13 @@ service BackupManagement {
 }
 
 message CreateBackupRequest {
-  string name = 1;
 }
 
 message CreateBackupResponse {
 }
 
 message DeleteBackupRequest {
+  string name = 1;
 }
 
 message DeleteBackupResponse {
