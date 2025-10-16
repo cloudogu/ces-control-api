@@ -18,6 +18,14 @@ service BackupManagement {
   rpc SetSchedule(SetBackupScheduleRequest) returns (SetBackupScheduleResponse);
   // GetRetentionPolicy retrieves the current backup retention policy.
   rpc GetRetentionPolicy(GetRetentionPolicyRequest) returns (GetRetentionPolicyResponse);
+  // CreateBackup creates a new backup
+  rpc CreateBackup(CreateBackupRequest) returns (CreateBackupResponse);
+}
+
+message CreateBackupRequest {
+}
+
+message CreateBackupResponse {
 }
 
 // LastSuccessfulBackupRequest contains the data which are used to retrieve information about the last successfully
@@ -50,8 +58,8 @@ message BackupResponse {
   string end_time = 3;
   // type provides information about the backup type.
   string type = 4 [deprecated = true];
-  // success indicates if the backup was successful.
-  bool success = 5;
+  // status contains the current backup status: in progress, failed, completed.
+  string status = 5;
   // error_message contains a possible reason if the backup was not successful.
   string error_message = 6 [deprecated = true];
   // current_version indicates if the backup was made on the current blueprint id
@@ -70,7 +78,6 @@ message RestoreResponse {
   // blueprint_id indicates the blueprint id of the backup the restore is based on
   string blueprint_id = 5;
 }
-
 
 // ResticCredentialValidRequest contains the data which are used to retrieve information about validity of the restic
 // repo credentials entered into etcd.
