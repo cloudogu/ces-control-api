@@ -20,12 +20,21 @@ service BackupManagement {
   rpc GetRetentionPolicy(GetRetentionPolicyRequest) returns (GetRetentionPolicyResponse);
   // CreateBackup creates a new backup
   rpc CreateBackup(CreateBackupRequest) returns (CreateBackupResponse);
+  // DeleteBackup deletes a backup
+  rpc DeleteBackup(DeleteBackupRequest) returns (DeleteBackupResponse);
 }
 
 message CreateBackupRequest {
 }
 
 message CreateBackupResponse {
+}
+
+message DeleteBackupRequest {
+  string name = 1;
+}
+
+message DeleteBackupResponse {
 }
 
 // LastSuccessfulBackupRequest contains the data which are used to retrieve information about the last successfully
