@@ -76,6 +76,8 @@ message BackupResponse {
   bool current_version = 7;
   // restorable indicates if the backup can be restored into the current system.
   bool restorable = 8;
+  // blueprint_id indicates the blueprint id of the backup the restore is based on
+  string blueprint_id = 9;
 }
 
 message RestoreResponse {
