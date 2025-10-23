@@ -40,6 +40,8 @@ type BackupManagementClient interface {
 	GetRetentionPolicy(ctx context.Context, in *GetRetentionPolicyRequest, opts ...grpc.CallOption) (*GetRetentionPolicyResponse, error)
 	// CreateBackup creates a new backup
 	CreateBackup(ctx context.Context, in *CreateBackupRequest, opts ...grpc.CallOption) (*CreateBackupResponse, error)
+	// DeleteBackup deletes a backup
+	DeleteBackup(ctx context.Context, in *DeleteBackupRequest, opts ...grpc.CallOption) (*DeleteBackupResponse, error)
 }
 
 type backupManagementClient struct {
@@ -131,6 +133,15 @@ func (c *backupManagementClient) CreateBackup(ctx context.Context, in *CreateBac
 	return out, nil
 }
 
+func (c *backupManagementClient) DeleteBackup(ctx context.Context, in *DeleteBackupRequest, opts ...grpc.CallOption) (*DeleteBackupResponse, error) {
+	out := new(DeleteBackupResponse)
+	err := c.cc.Invoke(ctx, "/backup.BackupManagement/DeleteBackup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BackupManagementServer is the server API for BackupManagement service.
 // All implementations must embed UnimplementedBackupManagementServer
 // for forward compatibility
@@ -153,6 +164,8 @@ type BackupManagementServer interface {
 	GetRetentionPolicy(context.Context, *GetRetentionPolicyRequest) (*GetRetentionPolicyResponse, error)
 	// CreateBackup creates a new backup
 	CreateBackup(context.Context, *CreateBackupRequest) (*CreateBackupResponse, error)
+	// DeleteBackup deletes a backup
+	DeleteBackup(context.Context, *DeleteBackupRequest) (*DeleteBackupResponse, error)
 	mustEmbedUnimplementedBackupManagementServer()
 }
 
@@ -186,6 +199,9 @@ func (UnimplementedBackupManagementServer) GetRetentionPolicy(context.Context, *
 }
 func (UnimplementedBackupManagementServer) CreateBackup(context.Context, *CreateBackupRequest) (*CreateBackupResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateBackup not implemented")
+}
+func (UnimplementedBackupManagementServer) DeleteBackup(context.Context, *DeleteBackupRequest) (*DeleteBackupResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteBackup not implemented")
 }
 func (UnimplementedBackupManagementServer) mustEmbedUnimplementedBackupManagementServer() {}
 
@@ -362,6 +378,24 @@ func _BackupManagement_CreateBackup_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BackupManagement_DeleteBackup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteBackupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupManagementServer).DeleteBackup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/backup.BackupManagement/DeleteBackup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupManagementServer).DeleteBackup(ctx, req.(*DeleteBackupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // BackupManagement_ServiceDesc is the grpc.ServiceDesc for BackupManagement service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -404,6 +438,10 @@ var BackupManagement_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateBackup",
 			Handler:    _BackupManagement_CreateBackup_Handler,
+		},
+		{
+			MethodName: "DeleteBackup",
+			Handler:    _BackupManagement_DeleteBackup_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
