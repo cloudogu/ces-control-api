@@ -12,6 +12,8 @@ service BackupManagement {
   rpc AllBackups(GetAllBackupsRequest) returns (GetAllBackupsResponse);
   // AllRestores retrieves all Restores in the system
   rpc AllRestores(GetAllRestoresRequest) returns (GetAllRestoresResponse);
+  // CreateRestore creates a new restore with the given backup.
+  rpc CreateRestore(CreateRestoreRequest) returns (CreateRestoreResponse);
   // GetSchedule retrieves the backup schedule as a cron expression.
   rpc GetSchedule(GetBackupScheduleRequest) returns (GetBackupScheduleResponse);
   // SetSchedule sets the backup schedule as a cron expression.
@@ -56,6 +58,14 @@ message GetAllRestoresResponse {
   repeated RestoreResponse restores = 1;
 }
 
+message CreateRestoreRequest {
+  // id contains the id of the backup that should be restored
+  string backup_id = 1;
+}
+
+message CreateRestoreResponse {
+}
+
 
 // BackupResponse contains information about a created backup.
 message BackupResponse {
@@ -67,12 +77,16 @@ message BackupResponse {
   string end_time = 3;
   // type provides information about the backup type.
   string type = 4 [deprecated = true];
-  // status contains the current backup status: in progress, failed, completed.
+  // status indicates the current backup status: in progress, failed, completed
   string status = 5;
   // error_message contains a possible reason if the backup was not successful.
   string error_message = 6 [deprecated = true];
   // current_version indicates if the backup was made on the current blueprint id
   bool current_version = 7;
+  // restorable indicates if the backup can be restored into the current system.
+  bool restorable = 8;
+  // blueprint_id indicates the blueprint id of the backup the restore is based on
+  string blueprint_id = 9;
 }
 
 message RestoreResponse {
@@ -87,6 +101,7 @@ message RestoreResponse {
   // blueprint_id indicates the blueprint id of the backup the restore is based on
   string blueprint_id = 5;
 }
+
 
 // ResticCredentialValidRequest contains the data which are used to retrieve information about validity of the restic
 // repo credentials entered into etcd.
