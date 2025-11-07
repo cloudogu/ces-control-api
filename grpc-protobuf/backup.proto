@@ -95,9 +95,9 @@ message RestoreResponse {
   // start_time contains the time when the restore was started.
   string start_time = 2;
   // success indicates if the restore was successful.
-  bool success = 4;
+  bool success = 3;
   // blueprint_id indicates the blueprint id of the backup the restore is based on
-  string blueprint_id = 5;
+  string blueprint_id = 4;
 }
 
 
