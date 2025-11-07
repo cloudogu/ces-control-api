@@ -20,6 +20,228 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// RetentionPolicy defines the available backup retention policies.
+type RetentionPolicy int32
+
+const (
+	RetentionPolicy_RETENTION_POLICY_UNSPECIFIED RetentionPolicy = 0
+	// RETENTION_POLICY_KEEP_ALL keeps all backups.
+	RetentionPolicy_RETENTION_POLICY_KEEP_ALL RetentionPolicy = 1
+	// RETENTION_POLICY_REMOVE_ALL_BUT_KEEP_LATEST removes all backups but keeps the latest one.
+	RetentionPolicy_RETENTION_POLICY_REMOVE_ALL_BUT_KEEP_LATEST RetentionPolicy = 2
+	// RETENTION_POLICY_KEEP_LAST_SEVEN_DAYS keeps backups from the last seven days.
+	RetentionPolicy_RETENTION_POLICY_KEEP_LAST_SEVEN_DAYS RetentionPolicy = 3
+	// RETENTION_POLICY_KEEP_LAST_7_DAYS_OLDEST_OF_1_MONTH_1_QUARTER_1_HALF_YEAR_1_YEAR keeps backups from the last 7 days
+	// and the oldest backup of the last month, quarter, half year, and year.
+	RetentionPolicy_RETENTION_POLICY_KEEP_LAST_7_DAYS_OLDEST_OF_1_MONTH_1_QUARTER_1_HALF_YEAR_1_YEAR RetentionPolicy = 4
+)
+
+// Enum value maps for RetentionPolicy.
+var (
+	RetentionPolicy_name = map[int32]string{
+		0: "RETENTION_POLICY_UNSPECIFIED",
+		1: "RETENTION_POLICY_KEEP_ALL",
+		2: "RETENTION_POLICY_REMOVE_ALL_BUT_KEEP_LATEST",
+		3: "RETENTION_POLICY_KEEP_LAST_SEVEN_DAYS",
+		4: "RETENTION_POLICY_KEEP_LAST_7_DAYS_OLDEST_OF_1_MONTH_1_QUARTER_1_HALF_YEAR_1_YEAR",
+	}
+	RetentionPolicy_value = map[string]int32{
+		"RETENTION_POLICY_UNSPECIFIED":                                                     0,
+		"RETENTION_POLICY_KEEP_ALL":                                                        1,
+		"RETENTION_POLICY_REMOVE_ALL_BUT_KEEP_LATEST":                                      2,
+		"RETENTION_POLICY_KEEP_LAST_SEVEN_DAYS":                                            3,
+		"RETENTION_POLICY_KEEP_LAST_7_DAYS_OLDEST_OF_1_MONTH_1_QUARTER_1_HALF_YEAR_1_YEAR": 4,
+	}
+)
+
+func (x RetentionPolicy) Enum() *RetentionPolicy {
+	p := new(RetentionPolicy)
+	*p = x
+	return p
+}
+
+func (x RetentionPolicy) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (RetentionPolicy) Descriptor() protoreflect.EnumDescriptor {
+	return file_backup_proto_enumTypes[0].Descriptor()
+}
+
+func (RetentionPolicy) Type() protoreflect.EnumType {
+	return &file_backup_proto_enumTypes[0]
+}
+
+func (x RetentionPolicy) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use RetentionPolicy.Descriptor instead.
+func (RetentionPolicy) EnumDescriptor() ([]byte, []int) {
+	return file_backup_proto_rawDescGZIP(), []int{0}
+}
+
+type CreateBackupRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *CreateBackupRequest) Reset() {
+	*x = CreateBackupRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_backup_proto_msgTypes[0]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CreateBackupRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateBackupRequest) ProtoMessage() {}
+
+func (x *CreateBackupRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_backup_proto_msgTypes[0]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateBackupRequest.ProtoReflect.Descriptor instead.
+func (*CreateBackupRequest) Descriptor() ([]byte, []int) {
+	return file_backup_proto_rawDescGZIP(), []int{0}
+}
+
+type CreateBackupResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *CreateBackupResponse) Reset() {
+	*x = CreateBackupResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_backup_proto_msgTypes[1]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CreateBackupResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateBackupResponse) ProtoMessage() {}
+
+func (x *CreateBackupResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_backup_proto_msgTypes[1]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateBackupResponse.ProtoReflect.Descriptor instead.
+func (*CreateBackupResponse) Descriptor() ([]byte, []int) {
+	return file_backup_proto_rawDescGZIP(), []int{1}
+}
+
+type DeleteBackupRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+}
+
+func (x *DeleteBackupRequest) Reset() {
+	*x = DeleteBackupRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_backup_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DeleteBackupRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteBackupRequest) ProtoMessage() {}
+
+func (x *DeleteBackupRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_backup_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteBackupRequest.ProtoReflect.Descriptor instead.
+func (*DeleteBackupRequest) Descriptor() ([]byte, []int) {
+	return file_backup_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *DeleteBackupRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type DeleteBackupResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *DeleteBackupResponse) Reset() {
+	*x = DeleteBackupResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_backup_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DeleteBackupResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteBackupResponse) ProtoMessage() {}
+
+func (x *DeleteBackupResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_backup_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteBackupResponse.ProtoReflect.Descriptor instead.
+func (*DeleteBackupResponse) Descriptor() ([]byte, []int) {
+	return file_backup_proto_rawDescGZIP(), []int{3}
+}
+
 // LastSuccessfulBackupRequest contains the data which are used to retrieve information about the last successfully
 // created backup.
 type LastSuccessfulBackupRequest struct {
@@ -31,7 +253,7 @@ type LastSuccessfulBackupRequest struct {
 func (x *LastSuccessfulBackupRequest) Reset() {
 	*x = LastSuccessfulBackupRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_backup_proto_msgTypes[0]
+		mi := &file_backup_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -44,7 +266,7 @@ func (x *LastSuccessfulBackupRequest) String() string {
 func (*LastSuccessfulBackupRequest) ProtoMessage() {}
 
 func (x *LastSuccessfulBackupRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_backup_proto_msgTypes[0]
+	mi := &file_backup_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -57,10 +279,266 @@ func (x *LastSuccessfulBackupRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LastSuccessfulBackupRequest.ProtoReflect.Descriptor instead.
 func (*LastSuccessfulBackupRequest) Descriptor() ([]byte, []int) {
-	return file_backup_proto_rawDescGZIP(), []int{0}
+	return file_backup_proto_rawDescGZIP(), []int{4}
 }
 
-// LastBackupResponse contains information about the last successfully created backup.
+type GetAllBackupsRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *GetAllBackupsRequest) Reset() {
+	*x = GetAllBackupsRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_backup_proto_msgTypes[5]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetAllBackupsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAllBackupsRequest) ProtoMessage() {}
+
+func (x *GetAllBackupsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_backup_proto_msgTypes[5]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAllBackupsRequest.ProtoReflect.Descriptor instead.
+func (*GetAllBackupsRequest) Descriptor() ([]byte, []int) {
+	return file_backup_proto_rawDescGZIP(), []int{5}
+}
+
+type GetAllBackupsResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Backups []*BackupResponse `protobuf:"bytes,1,rep,name=backups,proto3" json:"backups,omitempty"`
+}
+
+func (x *GetAllBackupsResponse) Reset() {
+	*x = GetAllBackupsResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_backup_proto_msgTypes[6]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetAllBackupsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAllBackupsResponse) ProtoMessage() {}
+
+func (x *GetAllBackupsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_backup_proto_msgTypes[6]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAllBackupsResponse.ProtoReflect.Descriptor instead.
+func (*GetAllBackupsResponse) Descriptor() ([]byte, []int) {
+	return file_backup_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *GetAllBackupsResponse) GetBackups() []*BackupResponse {
+	if x != nil {
+		return x.Backups
+	}
+	return nil
+}
+
+type GetAllRestoresRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *GetAllRestoresRequest) Reset() {
+	*x = GetAllRestoresRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_backup_proto_msgTypes[7]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetAllRestoresRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAllRestoresRequest) ProtoMessage() {}
+
+func (x *GetAllRestoresRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_backup_proto_msgTypes[7]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAllRestoresRequest.ProtoReflect.Descriptor instead.
+func (*GetAllRestoresRequest) Descriptor() ([]byte, []int) {
+	return file_backup_proto_rawDescGZIP(), []int{7}
+}
+
+type GetAllRestoresResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Restores []*RestoreResponse `protobuf:"bytes,1,rep,name=restores,proto3" json:"restores,omitempty"`
+}
+
+func (x *GetAllRestoresResponse) Reset() {
+	*x = GetAllRestoresResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_backup_proto_msgTypes[8]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetAllRestoresResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAllRestoresResponse) ProtoMessage() {}
+
+func (x *GetAllRestoresResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_backup_proto_msgTypes[8]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAllRestoresResponse.ProtoReflect.Descriptor instead.
+func (*GetAllRestoresResponse) Descriptor() ([]byte, []int) {
+	return file_backup_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *GetAllRestoresResponse) GetRestores() []*RestoreResponse {
+	if x != nil {
+		return x.Restores
+	}
+	return nil
+}
+
+type CreateRestoreRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// id contains the id of the backup that should be restored
+	BackupId string `protobuf:"bytes,1,opt,name=backup_id,json=backupId,proto3" json:"backup_id,omitempty"`
+}
+
+func (x *CreateRestoreRequest) Reset() {
+	*x = CreateRestoreRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_backup_proto_msgTypes[9]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CreateRestoreRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateRestoreRequest) ProtoMessage() {}
+
+func (x *CreateRestoreRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_backup_proto_msgTypes[9]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateRestoreRequest.ProtoReflect.Descriptor instead.
+func (*CreateRestoreRequest) Descriptor() ([]byte, []int) {
+	return file_backup_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *CreateRestoreRequest) GetBackupId() string {
+	if x != nil {
+		return x.BackupId
+	}
+	return ""
+}
+
+type CreateRestoreResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *CreateRestoreResponse) Reset() {
+	*x = CreateRestoreResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_backup_proto_msgTypes[10]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CreateRestoreResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateRestoreResponse) ProtoMessage() {}
+
+func (x *CreateRestoreResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_backup_proto_msgTypes[10]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateRestoreResponse.ProtoReflect.Descriptor instead.
+func (*CreateRestoreResponse) Descriptor() ([]byte, []int) {
+	return file_backup_proto_rawDescGZIP(), []int{10}
+}
+
+// BackupResponse contains information about a created backup.
 type BackupResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -73,17 +551,27 @@ type BackupResponse struct {
 	// end_time contains the time when the backup process has ended.
 	EndTime string `protobuf:"bytes,3,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
 	// type provides information about the backup type.
+	//
+	// Deprecated: Do not use.
 	Type string `protobuf:"bytes,4,opt,name=type,proto3" json:"type,omitempty"`
-	// success indicates if the backup was successful.
-	Success bool `protobuf:"varint,5,opt,name=success,proto3" json:"success,omitempty"`
+	// status indicates the current backup status: in progress, failed, completed
+	Status string `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
 	// error_message contains a possible reason if the backup was not successful.
+	//
+	// Deprecated: Do not use.
 	ErrorMessage string `protobuf:"bytes,6,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
+	// current_version indicates if the backup was made on the current blueprint id
+	CurrentVersion bool `protobuf:"varint,7,opt,name=current_version,json=currentVersion,proto3" json:"current_version,omitempty"`
+	// restorable indicates if the backup can be restored into the current system.
+	Restorable bool `protobuf:"varint,8,opt,name=restorable,proto3" json:"restorable,omitempty"`
+	// blueprint_id indicates the blueprint id of the backup the restore is based on
+	BlueprintId string `protobuf:"bytes,9,opt,name=blueprint_id,json=blueprintId,proto3" json:"blueprint_id,omitempty"`
 }
 
 func (x *BackupResponse) Reset() {
 	*x = BackupResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_backup_proto_msgTypes[1]
+		mi := &file_backup_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -96,7 +584,7 @@ func (x *BackupResponse) String() string {
 func (*BackupResponse) ProtoMessage() {}
 
 func (x *BackupResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_backup_proto_msgTypes[1]
+	mi := &file_backup_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -109,7 +597,7 @@ func (x *BackupResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BackupResponse.ProtoReflect.Descriptor instead.
 func (*BackupResponse) Descriptor() ([]byte, []int) {
-	return file_backup_proto_rawDescGZIP(), []int{1}
+	return file_backup_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *BackupResponse) GetId() string {
@@ -133,6 +621,7 @@ func (x *BackupResponse) GetEndTime() string {
 	return ""
 }
 
+// Deprecated: Do not use.
 func (x *BackupResponse) GetType() string {
 	if x != nil {
 		return x.Type
@@ -140,16 +629,113 @@ func (x *BackupResponse) GetType() string {
 	return ""
 }
 
-func (x *BackupResponse) GetSuccess() bool {
+func (x *BackupResponse) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+// Deprecated: Do not use.
+func (x *BackupResponse) GetErrorMessage() string {
+	if x != nil {
+		return x.ErrorMessage
+	}
+	return ""
+}
+
+func (x *BackupResponse) GetCurrentVersion() bool {
+	if x != nil {
+		return x.CurrentVersion
+	}
+	return false
+}
+
+func (x *BackupResponse) GetRestorable() bool {
+	if x != nil {
+		return x.Restorable
+	}
+	return false
+}
+
+func (x *BackupResponse) GetBlueprintId() string {
+	if x != nil {
+		return x.BlueprintId
+	}
+	return ""
+}
+
+type RestoreResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// id contains the id of the backup associated with the restore
+	BackupId string `protobuf:"bytes,1,opt,name=backup_id,json=backupId,proto3" json:"backup_id,omitempty"`
+	// start_time contains the time when the restore was started.
+	StartTime string `protobuf:"bytes,2,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
+	// success indicates if the restore was successful.
+	Success bool `protobuf:"varint,3,opt,name=success,proto3" json:"success,omitempty"`
+	// blueprint_id indicates the blueprint id of the backup the restore is based on
+	BlueprintId string `protobuf:"bytes,4,opt,name=blueprint_id,json=blueprintId,proto3" json:"blueprint_id,omitempty"`
+}
+
+func (x *RestoreResponse) Reset() {
+	*x = RestoreResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_backup_proto_msgTypes[12]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *RestoreResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RestoreResponse) ProtoMessage() {}
+
+func (x *RestoreResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_backup_proto_msgTypes[12]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RestoreResponse.ProtoReflect.Descriptor instead.
+func (*RestoreResponse) Descriptor() ([]byte, []int) {
+	return file_backup_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *RestoreResponse) GetBackupId() string {
+	if x != nil {
+		return x.BackupId
+	}
+	return ""
+}
+
+func (x *RestoreResponse) GetStartTime() string {
+	if x != nil {
+		return x.StartTime
+	}
+	return ""
+}
+
+func (x *RestoreResponse) GetSuccess() bool {
 	if x != nil {
 		return x.Success
 	}
 	return false
 }
 
-func (x *BackupResponse) GetErrorMessage() string {
+func (x *RestoreResponse) GetBlueprintId() string {
 	if x != nil {
-		return x.ErrorMessage
+		return x.BlueprintId
 	}
 	return ""
 }
@@ -165,7 +751,7 @@ type ResticCredentialValidRequest struct {
 func (x *ResticCredentialValidRequest) Reset() {
 	*x = ResticCredentialValidRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_backup_proto_msgTypes[2]
+		mi := &file_backup_proto_msgTypes[13]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -178,7 +764,7 @@ func (x *ResticCredentialValidRequest) String() string {
 func (*ResticCredentialValidRequest) ProtoMessage() {}
 
 func (x *ResticCredentialValidRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_backup_proto_msgTypes[2]
+	mi := &file_backup_proto_msgTypes[13]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -191,7 +777,7 @@ func (x *ResticCredentialValidRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ResticCredentialValidRequest.ProtoReflect.Descriptor instead.
 func (*ResticCredentialValidRequest) Descriptor() ([]byte, []int) {
-	return file_backup_proto_rawDescGZIP(), []int{2}
+	return file_backup_proto_rawDescGZIP(), []int{13}
 }
 
 // ResticCredentialResponse contains information about the validity of the restic credentials from etcd.
@@ -207,7 +793,7 @@ type ResticCredentialResponse struct {
 func (x *ResticCredentialResponse) Reset() {
 	*x = ResticCredentialResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_backup_proto_msgTypes[3]
+		mi := &file_backup_proto_msgTypes[14]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -220,7 +806,7 @@ func (x *ResticCredentialResponse) String() string {
 func (*ResticCredentialResponse) ProtoMessage() {}
 
 func (x *ResticCredentialResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_backup_proto_msgTypes[3]
+	mi := &file_backup_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -233,7 +819,7 @@ func (x *ResticCredentialResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ResticCredentialResponse.ProtoReflect.Descriptor instead.
 func (*ResticCredentialResponse) Descriptor() ([]byte, []int) {
-	return file_backup_proto_rawDescGZIP(), []int{3}
+	return file_backup_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *ResticCredentialResponse) GetValid() bool {
@@ -243,45 +829,423 @@ func (x *ResticCredentialResponse) GetValid() bool {
 	return false
 }
 
+// BackupScheduleRequest contains the data which are used to retrieve the backup schedule.
+type GetBackupScheduleRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *GetBackupScheduleRequest) Reset() {
+	*x = GetBackupScheduleRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_backup_proto_msgTypes[15]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetBackupScheduleRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetBackupScheduleRequest) ProtoMessage() {}
+
+func (x *GetBackupScheduleRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_backup_proto_msgTypes[15]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetBackupScheduleRequest.ProtoReflect.Descriptor instead.
+func (*GetBackupScheduleRequest) Descriptor() ([]byte, []int) {
+	return file_backup_proto_rawDescGZIP(), []int{15}
+}
+
+// BackupScheduleResponse contains the backup schedule as a cron expression.
+type GetBackupScheduleResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// schedule contains the backup schedule as a cron expression string.
+	Schedule string `protobuf:"bytes,1,opt,name=schedule,proto3" json:"schedule,omitempty"`
+}
+
+func (x *GetBackupScheduleResponse) Reset() {
+	*x = GetBackupScheduleResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_backup_proto_msgTypes[16]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetBackupScheduleResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetBackupScheduleResponse) ProtoMessage() {}
+
+func (x *GetBackupScheduleResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_backup_proto_msgTypes[16]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetBackupScheduleResponse.ProtoReflect.Descriptor instead.
+func (*GetBackupScheduleResponse) Descriptor() ([]byte, []int) {
+	return file_backup_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *GetBackupScheduleResponse) GetSchedule() string {
+	if x != nil {
+		return x.Schedule
+	}
+	return ""
+}
+
+// SetBackupScheduleRequest contains the data which are used to set the backup schedule.
+type SetBackupScheduleRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// schedule contains the backup schedule as a cron expression string to be set.
+	Schedule string `protobuf:"bytes,1,opt,name=schedule,proto3" json:"schedule,omitempty"`
+}
+
+func (x *SetBackupScheduleRequest) Reset() {
+	*x = SetBackupScheduleRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_backup_proto_msgTypes[17]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SetBackupScheduleRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SetBackupScheduleRequest) ProtoMessage() {}
+
+func (x *SetBackupScheduleRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_backup_proto_msgTypes[17]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SetBackupScheduleRequest.ProtoReflect.Descriptor instead.
+func (*SetBackupScheduleRequest) Descriptor() ([]byte, []int) {
+	return file_backup_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *SetBackupScheduleRequest) GetSchedule() string {
+	if x != nil {
+		return x.Schedule
+	}
+	return ""
+}
+
+// SetBackupScheduleResponse contains the result of setting the backup schedule.
+type SetBackupScheduleResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *SetBackupScheduleResponse) Reset() {
+	*x = SetBackupScheduleResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_backup_proto_msgTypes[18]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SetBackupScheduleResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SetBackupScheduleResponse) ProtoMessage() {}
+
+func (x *SetBackupScheduleResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_backup_proto_msgTypes[18]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SetBackupScheduleResponse.ProtoReflect.Descriptor instead.
+func (*SetBackupScheduleResponse) Descriptor() ([]byte, []int) {
+	return file_backup_proto_rawDescGZIP(), []int{18}
+}
+
+// GetRetentionPolicyResponse contains the data which are used to retrieve the retention policy.
+type GetRetentionPolicyRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *GetRetentionPolicyRequest) Reset() {
+	*x = GetRetentionPolicyRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_backup_proto_msgTypes[19]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetRetentionPolicyRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetRetentionPolicyRequest) ProtoMessage() {}
+
+func (x *GetRetentionPolicyRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_backup_proto_msgTypes[19]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetRetentionPolicyRequest.ProtoReflect.Descriptor instead.
+func (*GetRetentionPolicyRequest) Descriptor() ([]byte, []int) {
+	return file_backup_proto_rawDescGZIP(), []int{19}
+}
+
+// GetRetentionPolicyResponse contains the current backup retention policy.
+type GetRetentionPolicyResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// policy contains the current retention policy.
+	Policy RetentionPolicy `protobuf:"varint,1,opt,name=policy,proto3,enum=backup.RetentionPolicy" json:"policy,omitempty"`
+}
+
+func (x *GetRetentionPolicyResponse) Reset() {
+	*x = GetRetentionPolicyResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_backup_proto_msgTypes[20]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetRetentionPolicyResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetRetentionPolicyResponse) ProtoMessage() {}
+
+func (x *GetRetentionPolicyResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_backup_proto_msgTypes[20]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetRetentionPolicyResponse.ProtoReflect.Descriptor instead.
+func (*GetRetentionPolicyResponse) Descriptor() ([]byte, []int) {
+	return file_backup_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *GetRetentionPolicyResponse) GetPolicy() RetentionPolicy {
+	if x != nil {
+		return x.Policy
+	}
+	return RetentionPolicy_RETENTION_POLICY_UNSPECIFIED
+}
+
 var File_backup_proto protoreflect.FileDescriptor
 
 var file_backup_proto_rawDesc = []byte{
 	0x0a, 0x0c, 0x62, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x06,
-	0x62, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x22, 0x1d, 0x0a, 0x1b, 0x4c, 0x61, 0x73, 0x74, 0x53, 0x75,
-	0x63, 0x63, 0x65, 0x73, 0x73, 0x66, 0x75, 0x6c, 0x42, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x52, 0x65,
-	0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0xad, 0x01, 0x0a, 0x0e, 0x42, 0x61, 0x63, 0x6b, 0x75, 0x70,
-	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x1d, 0x0a, 0x0a, 0x73, 0x74, 0x61, 0x72,
-	0x74, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x73, 0x74,
-	0x61, 0x72, 0x74, 0x54, 0x69, 0x6d, 0x65, 0x12, 0x19, 0x0a, 0x08, 0x65, 0x6e, 0x64, 0x5f, 0x74,
-	0x69, 0x6d, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x65, 0x6e, 0x64, 0x54, 0x69,
-	0x6d, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x74, 0x79, 0x70, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x04, 0x74, 0x79, 0x70, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x73, 0x75, 0x63, 0x63, 0x65, 0x73,
-	0x73, 0x18, 0x05, 0x20, 0x01, 0x28, 0x08, 0x52, 0x07, 0x73, 0x75, 0x63, 0x63, 0x65, 0x73, 0x73,
-	0x12, 0x23, 0x0a, 0x0d, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x5f, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67,
-	0x65, 0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x4d, 0x65,
-	0x73, 0x73, 0x61, 0x67, 0x65, 0x22, 0x1e, 0x0a, 0x1c, 0x52, 0x65, 0x73, 0x74, 0x69, 0x63, 0x43,
-	0x72, 0x65, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x61, 0x6c, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x52, 0x65,
-	0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x30, 0x0a, 0x18, 0x52, 0x65, 0x73, 0x74, 0x69, 0x63, 0x43,
-	0x72, 0x65, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x61, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
-	0x65, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08,
-	0x52, 0x05, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x32, 0xbc, 0x01, 0x0a, 0x10, 0x42, 0x61, 0x63, 0x6b,
-	0x75, 0x70, 0x4d, 0x61, 0x6e, 0x61, 0x67, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x12, 0x4d, 0x0a, 0x0e,
-	0x4c, 0x61, 0x73, 0x74, 0x53, 0x75, 0x63, 0x63, 0x65, 0x73, 0x73, 0x66, 0x75, 0x6c, 0x12, 0x23,
-	0x2e, 0x62, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x2e, 0x4c, 0x61, 0x73, 0x74, 0x53, 0x75, 0x63, 0x63,
-	0x65, 0x73, 0x73, 0x66, 0x75, 0x6c, 0x42, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x52, 0x65, 0x71, 0x75,
-	0x65, 0x73, 0x74, 0x1a, 0x16, 0x2e, 0x62, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x2e, 0x42, 0x61, 0x63,
-	0x6b, 0x75, 0x70, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x59, 0x0a, 0x0f, 0x52,
-	0x65, 0x73, 0x74, 0x69, 0x63, 0x43, 0x72, 0x65, 0x64, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x12, 0x24,
-	0x2e, 0x62, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x2e, 0x52, 0x65, 0x73, 0x74, 0x69, 0x63, 0x43, 0x72,
-	0x65, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x61, 0x6c, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x52, 0x65, 0x71,
-	0x75, 0x65, 0x73, 0x74, 0x1a, 0x20, 0x2e, 0x62, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x2e, 0x52, 0x65,
-	0x73, 0x74, 0x69, 0x63, 0x43, 0x72, 0x65, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x61, 0x6c, 0x52, 0x65,
-	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x42, 0x36, 0x5a, 0x34, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62,
-	0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x6f, 0x67, 0x75, 0x2f, 0x63, 0x65,
-	0x73, 0x2d, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x6f, 0x6c, 0x2d, 0x61, 0x70, 0x69, 0x2f, 0x67, 0x65,
-	0x6e, 0x65, 0x72, 0x61, 0x74, 0x65, 0x64, 0x2f, 0x62, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x62, 0x06,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x62, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x22, 0x15, 0x0a, 0x13, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65,
+	0x42, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x16, 0x0a,
+	0x14, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x42, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x29, 0x0a, 0x13, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x42,
+	0x61, 0x63, 0x6b, 0x75, 0x70, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x12, 0x0a, 0x04,
+	0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65,
+	0x22, 0x16, 0x0a, 0x14, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x42, 0x61, 0x63, 0x6b, 0x75, 0x70,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x1d, 0x0a, 0x1b, 0x4c, 0x61, 0x73, 0x74,
+	0x53, 0x75, 0x63, 0x63, 0x65, 0x73, 0x73, 0x66, 0x75, 0x6c, 0x42, 0x61, 0x63, 0x6b, 0x75, 0x70,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x16, 0x0a, 0x14, 0x47, 0x65, 0x74, 0x41, 0x6c,
+	0x6c, 0x42, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22,
+	0x49, 0x0a, 0x15, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c, 0x42, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x73,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x30, 0x0a, 0x07, 0x62, 0x61, 0x63, 0x6b,
+	0x75, 0x70, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x16, 0x2e, 0x62, 0x61, 0x63, 0x6b,
+	0x75, 0x70, 0x2e, 0x42, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x52, 0x07, 0x62, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x73, 0x22, 0x17, 0x0a, 0x15, 0x47, 0x65,
+	0x74, 0x41, 0x6c, 0x6c, 0x52, 0x65, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x73, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x22, 0x4d, 0x0a, 0x16, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c, 0x52, 0x65, 0x73,
+	0x74, 0x6f, 0x72, 0x65, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x33, 0x0a,
+	0x08, 0x72, 0x65, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32,
+	0x17, 0x2e, 0x62, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x2e, 0x52, 0x65, 0x73, 0x74, 0x6f, 0x72, 0x65,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x52, 0x08, 0x72, 0x65, 0x73, 0x74, 0x6f, 0x72,
+	0x65, 0x73, 0x22, 0x33, 0x0a, 0x14, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x73, 0x74,
+	0x6f, 0x72, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1b, 0x0a, 0x09, 0x62, 0x61,
+	0x63, 0x6b, 0x75, 0x70, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x62,
+	0x61, 0x63, 0x6b, 0x75, 0x70, 0x49, 0x64, 0x22, 0x17, 0x0a, 0x15, 0x43, 0x72, 0x65, 0x61, 0x74,
+	0x65, 0x52, 0x65, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x22, 0x9f, 0x02, 0x0a, 0x0e, 0x42, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x02, 0x69, 0x64, 0x12, 0x1d, 0x0a, 0x0a, 0x73, 0x74, 0x61, 0x72, 0x74, 0x5f, 0x74, 0x69, 0x6d,
+	0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x73, 0x74, 0x61, 0x72, 0x74, 0x54, 0x69,
+	0x6d, 0x65, 0x12, 0x19, 0x0a, 0x08, 0x65, 0x6e, 0x64, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x18, 0x03,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x65, 0x6e, 0x64, 0x54, 0x69, 0x6d, 0x65, 0x12, 0x16, 0x0a,
+	0x04, 0x74, 0x79, 0x70, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x42, 0x02, 0x18, 0x01, 0x52,
+	0x04, 0x74, 0x79, 0x70, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18,
+	0x05, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x27, 0x0a,
+	0x0d, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x5f, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x06,
+	0x20, 0x01, 0x28, 0x09, 0x42, 0x02, 0x18, 0x01, 0x52, 0x0c, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x4d,
+	0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x27, 0x0a, 0x0f, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e,
+	0x74, 0x5f, 0x76, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x18, 0x07, 0x20, 0x01, 0x28, 0x08, 0x52,
+	0x0e, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x74, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x12,
+	0x1e, 0x0a, 0x0a, 0x72, 0x65, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x62, 0x6c, 0x65, 0x18, 0x08, 0x20,
+	0x01, 0x28, 0x08, 0x52, 0x0a, 0x72, 0x65, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x62, 0x6c, 0x65, 0x12,
+	0x21, 0x0a, 0x0c, 0x62, 0x6c, 0x75, 0x65, 0x70, 0x72, 0x69, 0x6e, 0x74, 0x5f, 0x69, 0x64, 0x18,
+	0x09, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x62, 0x6c, 0x75, 0x65, 0x70, 0x72, 0x69, 0x6e, 0x74,
+	0x49, 0x64, 0x22, 0x8a, 0x01, 0x0a, 0x0f, 0x52, 0x65, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1b, 0x0a, 0x09, 0x62, 0x61, 0x63, 0x6b, 0x75, 0x70,
+	0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x62, 0x61, 0x63, 0x6b, 0x75,
+	0x70, 0x49, 0x64, 0x12, 0x1d, 0x0a, 0x0a, 0x73, 0x74, 0x61, 0x72, 0x74, 0x5f, 0x74, 0x69, 0x6d,
+	0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x73, 0x74, 0x61, 0x72, 0x74, 0x54, 0x69,
+	0x6d, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x73, 0x75, 0x63, 0x63, 0x65, 0x73, 0x73, 0x18, 0x03, 0x20,
+	0x01, 0x28, 0x08, 0x52, 0x07, 0x73, 0x75, 0x63, 0x63, 0x65, 0x73, 0x73, 0x12, 0x21, 0x0a, 0x0c,
+	0x62, 0x6c, 0x75, 0x65, 0x70, 0x72, 0x69, 0x6e, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x04, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x0b, 0x62, 0x6c, 0x75, 0x65, 0x70, 0x72, 0x69, 0x6e, 0x74, 0x49, 0x64, 0x22,
+	0x1e, 0x0a, 0x1c, 0x52, 0x65, 0x73, 0x74, 0x69, 0x63, 0x43, 0x72, 0x65, 0x64, 0x65, 0x6e, 0x74,
+	0x69, 0x61, 0x6c, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22,
+	0x30, 0x0a, 0x18, 0x52, 0x65, 0x73, 0x74, 0x69, 0x63, 0x43, 0x72, 0x65, 0x64, 0x65, 0x6e, 0x74,
+	0x69, 0x61, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x76,
+	0x61, 0x6c, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x69,
+	0x64, 0x22, 0x1a, 0x0a, 0x18, 0x47, 0x65, 0x74, 0x42, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x53, 0x63,
+	0x68, 0x65, 0x64, 0x75, 0x6c, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x37, 0x0a,
+	0x19, 0x47, 0x65, 0x74, 0x42, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x53, 0x63, 0x68, 0x65, 0x64, 0x75,
+	0x6c, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1a, 0x0a, 0x08, 0x73, 0x63,
+	0x68, 0x65, 0x64, 0x75, 0x6c, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x73, 0x63,
+	0x68, 0x65, 0x64, 0x75, 0x6c, 0x65, 0x22, 0x36, 0x0a, 0x18, 0x53, 0x65, 0x74, 0x42, 0x61, 0x63,
+	0x6b, 0x75, 0x70, 0x53, 0x63, 0x68, 0x65, 0x64, 0x75, 0x6c, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x12, 0x1a, 0x0a, 0x08, 0x73, 0x63, 0x68, 0x65, 0x64, 0x75, 0x6c, 0x65, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x73, 0x63, 0x68, 0x65, 0x64, 0x75, 0x6c, 0x65, 0x22, 0x1b,
+	0x0a, 0x19, 0x53, 0x65, 0x74, 0x42, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x53, 0x63, 0x68, 0x65, 0x64,
+	0x75, 0x6c, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x1b, 0x0a, 0x19, 0x47,
+	0x65, 0x74, 0x52, 0x65, 0x74, 0x65, 0x6e, 0x74, 0x69, 0x6f, 0x6e, 0x50, 0x6f, 0x6c, 0x69, 0x63,
+	0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x4d, 0x0a, 0x1a, 0x47, 0x65, 0x74, 0x52,
+	0x65, 0x74, 0x65, 0x6e, 0x74, 0x69, 0x6f, 0x6e, 0x50, 0x6f, 0x6c, 0x69, 0x63, 0x79, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x2f, 0x0a, 0x06, 0x70, 0x6f, 0x6c, 0x69, 0x63, 0x79,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x17, 0x2e, 0x62, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x2e,
+	0x52, 0x65, 0x74, 0x65, 0x6e, 0x74, 0x69, 0x6f, 0x6e, 0x50, 0x6f, 0x6c, 0x69, 0x63, 0x79, 0x52,
+	0x06, 0x70, 0x6f, 0x6c, 0x69, 0x63, 0x79, 0x2a, 0x84, 0x02, 0x0a, 0x0f, 0x52, 0x65, 0x74, 0x65,
+	0x6e, 0x74, 0x69, 0x6f, 0x6e, 0x50, 0x6f, 0x6c, 0x69, 0x63, 0x79, 0x12, 0x20, 0x0a, 0x1c, 0x52,
+	0x45, 0x54, 0x45, 0x4e, 0x54, 0x49, 0x4f, 0x4e, 0x5f, 0x50, 0x4f, 0x4c, 0x49, 0x43, 0x59, 0x5f,
+	0x55, 0x4e, 0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49, 0x45, 0x44, 0x10, 0x00, 0x12, 0x1d, 0x0a,
+	0x19, 0x52, 0x45, 0x54, 0x45, 0x4e, 0x54, 0x49, 0x4f, 0x4e, 0x5f, 0x50, 0x4f, 0x4c, 0x49, 0x43,
+	0x59, 0x5f, 0x4b, 0x45, 0x45, 0x50, 0x5f, 0x41, 0x4c, 0x4c, 0x10, 0x01, 0x12, 0x2f, 0x0a, 0x2b,
+	0x52, 0x45, 0x54, 0x45, 0x4e, 0x54, 0x49, 0x4f, 0x4e, 0x5f, 0x50, 0x4f, 0x4c, 0x49, 0x43, 0x59,
+	0x5f, 0x52, 0x45, 0x4d, 0x4f, 0x56, 0x45, 0x5f, 0x41, 0x4c, 0x4c, 0x5f, 0x42, 0x55, 0x54, 0x5f,
+	0x4b, 0x45, 0x45, 0x50, 0x5f, 0x4c, 0x41, 0x54, 0x45, 0x53, 0x54, 0x10, 0x02, 0x12, 0x29, 0x0a,
+	0x25, 0x52, 0x45, 0x54, 0x45, 0x4e, 0x54, 0x49, 0x4f, 0x4e, 0x5f, 0x50, 0x4f, 0x4c, 0x49, 0x43,
+	0x59, 0x5f, 0x4b, 0x45, 0x45, 0x50, 0x5f, 0x4c, 0x41, 0x53, 0x54, 0x5f, 0x53, 0x45, 0x56, 0x45,
+	0x4e, 0x5f, 0x44, 0x41, 0x59, 0x53, 0x10, 0x03, 0x12, 0x54, 0x0a, 0x50, 0x52, 0x45, 0x54, 0x45,
+	0x4e, 0x54, 0x49, 0x4f, 0x4e, 0x5f, 0x50, 0x4f, 0x4c, 0x49, 0x43, 0x59, 0x5f, 0x4b, 0x45, 0x45,
+	0x50, 0x5f, 0x4c, 0x41, 0x53, 0x54, 0x5f, 0x37, 0x5f, 0x44, 0x41, 0x59, 0x53, 0x5f, 0x4f, 0x4c,
+	0x44, 0x45, 0x53, 0x54, 0x5f, 0x4f, 0x46, 0x5f, 0x31, 0x5f, 0x4d, 0x4f, 0x4e, 0x54, 0x48, 0x5f,
+	0x31, 0x5f, 0x51, 0x55, 0x41, 0x52, 0x54, 0x45, 0x52, 0x5f, 0x31, 0x5f, 0x48, 0x41, 0x4c, 0x46,
+	0x5f, 0x59, 0x45, 0x41, 0x52, 0x5f, 0x31, 0x5f, 0x59, 0x45, 0x41, 0x52, 0x10, 0x04, 0x32, 0xbe,
+	0x06, 0x0a, 0x10, 0x42, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x4d, 0x61, 0x6e, 0x61, 0x67, 0x65, 0x6d,
+	0x65, 0x6e, 0x74, 0x12, 0x4d, 0x0a, 0x0e, 0x4c, 0x61, 0x73, 0x74, 0x53, 0x75, 0x63, 0x63, 0x65,
+	0x73, 0x73, 0x66, 0x75, 0x6c, 0x12, 0x23, 0x2e, 0x62, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x2e, 0x4c,
+	0x61, 0x73, 0x74, 0x53, 0x75, 0x63, 0x63, 0x65, 0x73, 0x73, 0x66, 0x75, 0x6c, 0x42, 0x61, 0x63,
+	0x6b, 0x75, 0x70, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x16, 0x2e, 0x62, 0x61, 0x63,
+	0x6b, 0x75, 0x70, 0x2e, 0x42, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x12, 0x59, 0x0a, 0x0f, 0x52, 0x65, 0x73, 0x74, 0x69, 0x63, 0x43, 0x72, 0x65, 0x64,
+	0x56, 0x61, 0x6c, 0x69, 0x64, 0x12, 0x24, 0x2e, 0x62, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x2e, 0x52,
+	0x65, 0x73, 0x74, 0x69, 0x63, 0x43, 0x72, 0x65, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x61, 0x6c, 0x56,
+	0x61, 0x6c, 0x69, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x20, 0x2e, 0x62, 0x61,
+	0x63, 0x6b, 0x75, 0x70, 0x2e, 0x52, 0x65, 0x73, 0x74, 0x69, 0x63, 0x43, 0x72, 0x65, 0x64, 0x65,
+	0x6e, 0x74, 0x69, 0x61, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x49, 0x0a,
+	0x0a, 0x41, 0x6c, 0x6c, 0x42, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x73, 0x12, 0x1c, 0x2e, 0x62, 0x61,
+	0x63, 0x6b, 0x75, 0x70, 0x2e, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c, 0x42, 0x61, 0x63, 0x6b, 0x75,
+	0x70, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1d, 0x2e, 0x62, 0x61, 0x63, 0x6b,
+	0x75, 0x70, 0x2e, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c, 0x42, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x73,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x4c, 0x0a, 0x0b, 0x41, 0x6c, 0x6c, 0x52,
+	0x65, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x73, 0x12, 0x1d, 0x2e, 0x62, 0x61, 0x63, 0x6b, 0x75, 0x70,
+	0x2e, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c, 0x52, 0x65, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x73, 0x52,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1e, 0x2e, 0x62, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x2e,
+	0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c, 0x52, 0x65, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x73, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x4c, 0x0a, 0x0d, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65,
+	0x52, 0x65, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x12, 0x1c, 0x2e, 0x62, 0x61, 0x63, 0x6b, 0x75, 0x70,
+	0x2e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1d, 0x2e, 0x62, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x2e, 0x43,
+	0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x52, 0x0a, 0x0b, 0x47, 0x65, 0x74, 0x53, 0x63, 0x68, 0x65, 0x64,
+	0x75, 0x6c, 0x65, 0x12, 0x20, 0x2e, 0x62, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x2e, 0x47, 0x65, 0x74,
+	0x42, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x53, 0x63, 0x68, 0x65, 0x64, 0x75, 0x6c, 0x65, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x21, 0x2e, 0x62, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x2e, 0x47,
+	0x65, 0x74, 0x42, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x53, 0x63, 0x68, 0x65, 0x64, 0x75, 0x6c, 0x65,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x52, 0x0a, 0x0b, 0x53, 0x65, 0x74, 0x53,
+	0x63, 0x68, 0x65, 0x64, 0x75, 0x6c, 0x65, 0x12, 0x20, 0x2e, 0x62, 0x61, 0x63, 0x6b, 0x75, 0x70,
+	0x2e, 0x53, 0x65, 0x74, 0x42, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x53, 0x63, 0x68, 0x65, 0x64, 0x75,
+	0x6c, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x21, 0x2e, 0x62, 0x61, 0x63, 0x6b,
+	0x75, 0x70, 0x2e, 0x53, 0x65, 0x74, 0x42, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x53, 0x63, 0x68, 0x65,
+	0x64, 0x75, 0x6c, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x5b, 0x0a, 0x12,
+	0x47, 0x65, 0x74, 0x52, 0x65, 0x74, 0x65, 0x6e, 0x74, 0x69, 0x6f, 0x6e, 0x50, 0x6f, 0x6c, 0x69,
+	0x63, 0x79, 0x12, 0x21, 0x2e, 0x62, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x2e, 0x47, 0x65, 0x74, 0x52,
+	0x65, 0x74, 0x65, 0x6e, 0x74, 0x69, 0x6f, 0x6e, 0x50, 0x6f, 0x6c, 0x69, 0x63, 0x79, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x22, 0x2e, 0x62, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x2e, 0x47,
+	0x65, 0x74, 0x52, 0x65, 0x74, 0x65, 0x6e, 0x74, 0x69, 0x6f, 0x6e, 0x50, 0x6f, 0x6c, 0x69, 0x63,
+	0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x49, 0x0a, 0x0c, 0x43, 0x72, 0x65,
+	0x61, 0x74, 0x65, 0x42, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x12, 0x1b, 0x2e, 0x62, 0x61, 0x63, 0x6b,
+	0x75, 0x70, 0x2e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x42, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x52,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1c, 0x2e, 0x62, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x2e,
+	0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x42, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x49, 0x0a, 0x0c, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x42, 0x61,
+	0x63, 0x6b, 0x75, 0x70, 0x12, 0x1b, 0x2e, 0x62, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x2e, 0x44, 0x65,
+	0x6c, 0x65, 0x74, 0x65, 0x42, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x1a, 0x1c, 0x2e, 0x62, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74,
+	0x65, 0x42, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x42,
+	0x36, 0x5a, 0x34, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x63, 0x6c,
+	0x6f, 0x75, 0x64, 0x6f, 0x67, 0x75, 0x2f, 0x63, 0x65, 0x73, 0x2d, 0x63, 0x6f, 0x6e, 0x74, 0x72,
+	0x6f, 0x6c, 0x2d, 0x61, 0x70, 0x69, 0x2f, 0x67, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x74, 0x65, 0x64,
+	0x2f, 0x62, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -296,23 +1260,61 @@ func file_backup_proto_rawDescGZIP() []byte {
 	return file_backup_proto_rawDescData
 }
 
-var file_backup_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_backup_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_backup_proto_msgTypes = make([]protoimpl.MessageInfo, 21)
 var file_backup_proto_goTypes = []interface{}{
-	(*LastSuccessfulBackupRequest)(nil),  // 0: backup.LastSuccessfulBackupRequest
-	(*BackupResponse)(nil),               // 1: backup.BackupResponse
-	(*ResticCredentialValidRequest)(nil), // 2: backup.ResticCredentialValidRequest
-	(*ResticCredentialResponse)(nil),     // 3: backup.ResticCredentialResponse
+	(RetentionPolicy)(0),                 // 0: backup.RetentionPolicy
+	(*CreateBackupRequest)(nil),          // 1: backup.CreateBackupRequest
+	(*CreateBackupResponse)(nil),         // 2: backup.CreateBackupResponse
+	(*DeleteBackupRequest)(nil),          // 3: backup.DeleteBackupRequest
+	(*DeleteBackupResponse)(nil),         // 4: backup.DeleteBackupResponse
+	(*LastSuccessfulBackupRequest)(nil),  // 5: backup.LastSuccessfulBackupRequest
+	(*GetAllBackupsRequest)(nil),         // 6: backup.GetAllBackupsRequest
+	(*GetAllBackupsResponse)(nil),        // 7: backup.GetAllBackupsResponse
+	(*GetAllRestoresRequest)(nil),        // 8: backup.GetAllRestoresRequest
+	(*GetAllRestoresResponse)(nil),       // 9: backup.GetAllRestoresResponse
+	(*CreateRestoreRequest)(nil),         // 10: backup.CreateRestoreRequest
+	(*CreateRestoreResponse)(nil),        // 11: backup.CreateRestoreResponse
+	(*BackupResponse)(nil),               // 12: backup.BackupResponse
+	(*RestoreResponse)(nil),              // 13: backup.RestoreResponse
+	(*ResticCredentialValidRequest)(nil), // 14: backup.ResticCredentialValidRequest
+	(*ResticCredentialResponse)(nil),     // 15: backup.ResticCredentialResponse
+	(*GetBackupScheduleRequest)(nil),     // 16: backup.GetBackupScheduleRequest
+	(*GetBackupScheduleResponse)(nil),    // 17: backup.GetBackupScheduleResponse
+	(*SetBackupScheduleRequest)(nil),     // 18: backup.SetBackupScheduleRequest
+	(*SetBackupScheduleResponse)(nil),    // 19: backup.SetBackupScheduleResponse
+	(*GetRetentionPolicyRequest)(nil),    // 20: backup.GetRetentionPolicyRequest
+	(*GetRetentionPolicyResponse)(nil),   // 21: backup.GetRetentionPolicyResponse
 }
 var file_backup_proto_depIdxs = []int32{
-	0, // 0: backup.BackupManagement.LastSuccessful:input_type -> backup.LastSuccessfulBackupRequest
-	2, // 1: backup.BackupManagement.ResticCredValid:input_type -> backup.ResticCredentialValidRequest
-	1, // 2: backup.BackupManagement.LastSuccessful:output_type -> backup.BackupResponse
-	3, // 3: backup.BackupManagement.ResticCredValid:output_type -> backup.ResticCredentialResponse
-	2, // [2:4] is the sub-list for method output_type
-	0, // [0:2] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	12, // 0: backup.GetAllBackupsResponse.backups:type_name -> backup.BackupResponse
+	13, // 1: backup.GetAllRestoresResponse.restores:type_name -> backup.RestoreResponse
+	0,  // 2: backup.GetRetentionPolicyResponse.policy:type_name -> backup.RetentionPolicy
+	5,  // 3: backup.BackupManagement.LastSuccessful:input_type -> backup.LastSuccessfulBackupRequest
+	14, // 4: backup.BackupManagement.ResticCredValid:input_type -> backup.ResticCredentialValidRequest
+	6,  // 5: backup.BackupManagement.AllBackups:input_type -> backup.GetAllBackupsRequest
+	8,  // 6: backup.BackupManagement.AllRestores:input_type -> backup.GetAllRestoresRequest
+	10, // 7: backup.BackupManagement.CreateRestore:input_type -> backup.CreateRestoreRequest
+	16, // 8: backup.BackupManagement.GetSchedule:input_type -> backup.GetBackupScheduleRequest
+	18, // 9: backup.BackupManagement.SetSchedule:input_type -> backup.SetBackupScheduleRequest
+	20, // 10: backup.BackupManagement.GetRetentionPolicy:input_type -> backup.GetRetentionPolicyRequest
+	1,  // 11: backup.BackupManagement.CreateBackup:input_type -> backup.CreateBackupRequest
+	3,  // 12: backup.BackupManagement.DeleteBackup:input_type -> backup.DeleteBackupRequest
+	12, // 13: backup.BackupManagement.LastSuccessful:output_type -> backup.BackupResponse
+	15, // 14: backup.BackupManagement.ResticCredValid:output_type -> backup.ResticCredentialResponse
+	7,  // 15: backup.BackupManagement.AllBackups:output_type -> backup.GetAllBackupsResponse
+	9,  // 16: backup.BackupManagement.AllRestores:output_type -> backup.GetAllRestoresResponse
+	11, // 17: backup.BackupManagement.CreateRestore:output_type -> backup.CreateRestoreResponse
+	17, // 18: backup.BackupManagement.GetSchedule:output_type -> backup.GetBackupScheduleResponse
+	19, // 19: backup.BackupManagement.SetSchedule:output_type -> backup.SetBackupScheduleResponse
+	21, // 20: backup.BackupManagement.GetRetentionPolicy:output_type -> backup.GetRetentionPolicyResponse
+	2,  // 21: backup.BackupManagement.CreateBackup:output_type -> backup.CreateBackupResponse
+	4,  // 22: backup.BackupManagement.DeleteBackup:output_type -> backup.DeleteBackupResponse
+	13, // [13:23] is the sub-list for method output_type
+	3,  // [3:13] is the sub-list for method input_type
+	3,  // [3:3] is the sub-list for extension type_name
+	3,  // [3:3] is the sub-list for extension extendee
+	0,  // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_backup_proto_init() }
@@ -322,7 +1324,7 @@ func file_backup_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_backup_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*LastSuccessfulBackupRequest); i {
+			switch v := v.(*CreateBackupRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -334,7 +1336,7 @@ func file_backup_proto_init() {
 			}
 		}
 		file_backup_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BackupResponse); i {
+			switch v := v.(*CreateBackupResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -346,7 +1348,7 @@ func file_backup_proto_init() {
 			}
 		}
 		file_backup_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ResticCredentialValidRequest); i {
+			switch v := v.(*DeleteBackupRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -358,7 +1360,211 @@ func file_backup_proto_init() {
 			}
 		}
 		file_backup_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DeleteBackupResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_backup_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*LastSuccessfulBackupRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_backup_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetAllBackupsRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_backup_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetAllBackupsResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_backup_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetAllRestoresRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_backup_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetAllRestoresResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_backup_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CreateRestoreRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_backup_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CreateRestoreResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_backup_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*BackupResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_backup_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*RestoreResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_backup_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ResticCredentialValidRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_backup_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ResticCredentialResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_backup_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetBackupScheduleRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_backup_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetBackupScheduleResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_backup_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SetBackupScheduleRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_backup_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SetBackupScheduleResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_backup_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetRetentionPolicyRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_backup_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetRetentionPolicyResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -375,13 +1581,14 @@ func file_backup_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_backup_proto_rawDesc,
-			NumEnums:      0,
-			NumMessages:   4,
+			NumEnums:      1,
+			NumMessages:   21,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_backup_proto_goTypes,
 		DependencyIndexes: file_backup_proto_depIdxs,
+		EnumInfos:         file_backup_proto_enumTypes,
 		MessageInfos:      file_backup_proto_msgTypes,
 	}.Build()
 	File_backup_proto = out.File

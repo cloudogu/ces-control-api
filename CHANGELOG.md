@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v1.6.0] - 2025-11-07
+### Added
+- [#14] Extend Backup api to get backups and restores
+- [#15] get & set backup-schedule
+- [#15] get retention-policy 
+- [#17] create backups
+- [#20] create restores
+- [#21] delete restores
+
 ## [v1.5.0] - 2025-08-01
 ### Changed
 - `CreateSupportArchiveRequest` now has two formats (Legacy and Common) (#11)
