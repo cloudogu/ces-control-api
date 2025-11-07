@@ -8,6 +8,35 @@ service BackupManagement {
   rpc LastSuccessful(LastSuccessfulBackupRequest) returns (BackupResponse);
   // ResticCredValid retrieves information about the validity of the restic credentials from etcd
   rpc ResticCredValid(ResticCredentialValidRequest) returns (ResticCredentialResponse);
+  // AllBackups retrieves all Backups in the system
+  rpc AllBackups(GetAllBackupsRequest) returns (GetAllBackupsResponse);
+  // AllRestores retrieves all Restores in the system
+  rpc AllRestores(GetAllRestoresRequest) returns (GetAllRestoresResponse);
+  // CreateRestore creates a new restore with the given backup.
+  rpc CreateRestore(CreateRestoreRequest) returns (CreateRestoreResponse);
+  // GetSchedule retrieves the backup schedule as a cron expression.
+  rpc GetSchedule(GetBackupScheduleRequest) returns (GetBackupScheduleResponse);
+  // SetSchedule sets the backup schedule as a cron expression.
+  rpc SetSchedule(SetBackupScheduleRequest) returns (SetBackupScheduleResponse);
+  // GetRetentionPolicy retrieves the current backup retention policy.
+  rpc GetRetentionPolicy(GetRetentionPolicyRequest) returns (GetRetentionPolicyResponse);
+  // CreateBackup creates a new backup
+  rpc CreateBackup(CreateBackupRequest) returns (CreateBackupResponse);
+  // DeleteBackup deletes a backup
+  rpc DeleteBackup(DeleteBackupRequest) returns (DeleteBackupResponse);
+}
+
+message CreateBackupRequest {
+}
+
+message CreateBackupResponse {
+}
+
+message DeleteBackupRequest {
+  string name = 1;
+}
+
+message DeleteBackupResponse {
 }
 
 // LastSuccessfulBackupRequest contains the data which are used to retrieve information about the last successfully
@@ -15,7 +44,30 @@ service BackupManagement {
 message LastSuccessfulBackupRequest {
 }
 
-// LastBackupResponse contains information about the last successfully created backup.
+message GetAllBackupsRequest {
+}
+
+message GetAllBackupsResponse {
+  repeated BackupResponse backups = 1;
+}
+
+message GetAllRestoresRequest {
+}
+
+message GetAllRestoresResponse {
+  repeated RestoreResponse restores = 1;
+}
+
+message CreateRestoreRequest {
+  // id contains the id of the backup that should be restored
+  string backup_id = 1;
+}
+
+message CreateRestoreResponse {
+}
+
+
+// BackupResponse contains information about a created backup.
 message BackupResponse {
   // id contains the id of the backup.
   string id = 1;
@@ -24,12 +76,30 @@ message BackupResponse {
   // end_time contains the time when the backup process has ended.
   string end_time = 3;
   // type provides information about the backup type.
-  string type = 4;
-  // success indicates if the backup was successful.
-  bool success = 5;
+  string type = 4 [deprecated = true];
+  // status indicates the current backup status: in progress, failed, completed
+  string status = 5;
   // error_message contains a possible reason if the backup was not successful.
-  string error_message = 6;
+  string error_message = 6 [deprecated = true];
+  // current_version indicates if the backup was made on the current blueprint id
+  bool current_version = 7;
+  // restorable indicates if the backup can be restored into the current system.
+  bool restorable = 8;
+  // blueprint_id indicates the blueprint id of the backup the restore is based on
+  string blueprint_id = 9;
 }
+
+message RestoreResponse {
+  // id contains the id of the backup associated with the restore
+  string backup_id = 1;
+  // start_time contains the time when the restore was started.
+  string start_time = 2;
+  // success indicates if the restore was successful.
+  bool success = 3;
+  // blueprint_id indicates the blueprint id of the backup the restore is based on
+  string blueprint_id = 4;
+}
+
 
 // ResticCredentialValidRequest contains the data which are used to retrieve information about validity of the restic
 // repo credentials entered into etcd.
@@ -40,4 +110,48 @@ message ResticCredentialValidRequest {
 message ResticCredentialResponse {
   // valid indicates if the restic credentials from etcd are correct
   bool valid = 1;
+}
+
+// BackupScheduleRequest contains the data which are used to retrieve the backup schedule.
+message GetBackupScheduleRequest {
+}
+
+// BackupScheduleResponse contains the backup schedule as a cron expression.
+message GetBackupScheduleResponse {
+  // schedule contains the backup schedule as a cron expression string.
+  string schedule = 1;
+}
+
+// SetBackupScheduleRequest contains the data which are used to set the backup schedule.
+message SetBackupScheduleRequest {
+  // schedule contains the backup schedule as a cron expression string to be set.
+  string schedule = 1;
+}
+
+// SetBackupScheduleResponse contains the result of setting the backup schedule.
+message SetBackupScheduleResponse {
+}
+
+// RetentionPolicy defines the available backup retention policies.
+enum RetentionPolicy {
+  RETENTION_POLICY_UNSPECIFIED = 0;
+  // RETENTION_POLICY_KEEP_ALL keeps all backups.
+  RETENTION_POLICY_KEEP_ALL = 1;
+  // RETENTION_POLICY_REMOVE_ALL_BUT_KEEP_LATEST removes all backups but keeps the latest one.
+  RETENTION_POLICY_REMOVE_ALL_BUT_KEEP_LATEST = 2;
+  // RETENTION_POLICY_KEEP_LAST_SEVEN_DAYS keeps backups from the last seven days.
+  RETENTION_POLICY_KEEP_LAST_SEVEN_DAYS = 3;
+  // RETENTION_POLICY_KEEP_LAST_7_DAYS_OLDEST_OF_1_MONTH_1_QUARTER_1_HALF_YEAR_1_YEAR keeps backups from the last 7 days
+  // and the oldest backup of the last month, quarter, half year, and year.
+  RETENTION_POLICY_KEEP_LAST_7_DAYS_OLDEST_OF_1_MONTH_1_QUARTER_1_HALF_YEAR_1_YEAR = 4;
+}
+
+// GetRetentionPolicyResponse contains the data which are used to retrieve the retention policy.
+message GetRetentionPolicyRequest {
+}
+
+// GetRetentionPolicyResponse contains the current backup retention policy.
+message GetRetentionPolicyResponse {
+  // policy contains the current retention policy.
+  RetentionPolicy policy = 1;
 }
