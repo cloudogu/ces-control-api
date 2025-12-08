@@ -42,7 +42,7 @@ message GetAllSupportArchivesResponse {
 
 message Archive {
   string name = 1;
-  string start_time = 2;
+  int64 start_time = 2;
   SupportArchiveStatus status = 3;
 }
 
