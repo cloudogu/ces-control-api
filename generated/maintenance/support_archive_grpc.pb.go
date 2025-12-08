@@ -23,7 +23,10 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SupportArchiveClient interface {
-	Create(ctx context.Context, in *CreateSupportArchiveRequest, opts ...grpc.CallOption) (SupportArchive_CreateClient, error)
+	LegacyCreate(ctx context.Context, in *LegacySupportArchiveRequest, opts ...grpc.CallOption) (SupportArchive_LegacyCreateClient, error)
+	Create(ctx context.Context, in *CreateSupportArchiveRequest, opts ...grpc.CallOption) (*CreateSupportArchiveResponse, error)
+	AllSupportArchives(ctx context.Context, in *GetAllSupportArchivesRequest, opts ...grpc.CallOption) (*GetAllSupportArchivesResponse, error)
+	DeleteSupportArchive(ctx context.Context, in *DeleteSupportArchiveRequest, opts ...grpc.CallOption) (*DeleteSupportArchiveResponse, error)
 }
 
 type supportArchiveClient struct {
@@ -34,12 +37,12 @@ func NewSupportArchiveClient(cc grpc.ClientConnInterface) SupportArchiveClient {
 	return &supportArchiveClient{cc}
 }
 
-func (c *supportArchiveClient) Create(ctx context.Context, in *CreateSupportArchiveRequest, opts ...grpc.CallOption) (SupportArchive_CreateClient, error) {
-	stream, err := c.cc.NewStream(ctx, &SupportArchive_ServiceDesc.Streams[0], "/maintenance.SupportArchive/Create", opts...)
+func (c *supportArchiveClient) LegacyCreate(ctx context.Context, in *LegacySupportArchiveRequest, opts ...grpc.CallOption) (SupportArchive_LegacyCreateClient, error) {
+	stream, err := c.cc.NewStream(ctx, &SupportArchive_ServiceDesc.Streams[0], "/maintenance.SupportArchive/LegacyCreate", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &supportArchiveCreateClient{stream}
+	x := &supportArchiveLegacyCreateClient{stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -49,16 +52,16 @@ func (c *supportArchiveClient) Create(ctx context.Context, in *CreateSupportArch
 	return x, nil
 }
 
-type SupportArchive_CreateClient interface {
+type SupportArchive_LegacyCreateClient interface {
 	Recv() (*types.ChunkedDataResponse, error)
 	grpc.ClientStream
 }
 
-type supportArchiveCreateClient struct {
+type supportArchiveLegacyCreateClient struct {
 	grpc.ClientStream
 }
 
-func (x *supportArchiveCreateClient) Recv() (*types.ChunkedDataResponse, error) {
+func (x *supportArchiveLegacyCreateClient) Recv() (*types.ChunkedDataResponse, error) {
 	m := new(types.ChunkedDataResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -66,11 +69,41 @@ func (x *supportArchiveCreateClient) Recv() (*types.ChunkedDataResponse, error) 
 	return m, nil
 }
 
+func (c *supportArchiveClient) Create(ctx context.Context, in *CreateSupportArchiveRequest, opts ...grpc.CallOption) (*CreateSupportArchiveResponse, error) {
+	out := new(CreateSupportArchiveResponse)
+	err := c.cc.Invoke(ctx, "/maintenance.SupportArchive/Create", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *supportArchiveClient) AllSupportArchives(ctx context.Context, in *GetAllSupportArchivesRequest, opts ...grpc.CallOption) (*GetAllSupportArchivesResponse, error) {
+	out := new(GetAllSupportArchivesResponse)
+	err := c.cc.Invoke(ctx, "/maintenance.SupportArchive/AllSupportArchives", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *supportArchiveClient) DeleteSupportArchive(ctx context.Context, in *DeleteSupportArchiveRequest, opts ...grpc.CallOption) (*DeleteSupportArchiveResponse, error) {
+	out := new(DeleteSupportArchiveResponse)
+	err := c.cc.Invoke(ctx, "/maintenance.SupportArchive/DeleteSupportArchive", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SupportArchiveServer is the server API for SupportArchive service.
 // All implementations must embed UnimplementedSupportArchiveServer
 // for forward compatibility
 type SupportArchiveServer interface {
-	Create(*CreateSupportArchiveRequest, SupportArchive_CreateServer) error
+	LegacyCreate(*LegacySupportArchiveRequest, SupportArchive_LegacyCreateServer) error
+	Create(context.Context, *CreateSupportArchiveRequest) (*CreateSupportArchiveResponse, error)
+	AllSupportArchives(context.Context, *GetAllSupportArchivesRequest) (*GetAllSupportArchivesResponse, error)
+	DeleteSupportArchive(context.Context, *DeleteSupportArchiveRequest) (*DeleteSupportArchiveResponse, error)
 	mustEmbedUnimplementedSupportArchiveServer()
 }
 
@@ -78,8 +111,17 @@ type SupportArchiveServer interface {
 type UnimplementedSupportArchiveServer struct {
 }
 
-func (UnimplementedSupportArchiveServer) Create(*CreateSupportArchiveRequest, SupportArchive_CreateServer) error {
-	return status.Errorf(codes.Unimplemented, "method Create not implemented")
+func (UnimplementedSupportArchiveServer) LegacyCreate(*LegacySupportArchiveRequest, SupportArchive_LegacyCreateServer) error {
+	return status.Errorf(codes.Unimplemented, "method LegacyCreate not implemented")
+}
+func (UnimplementedSupportArchiveServer) Create(context.Context, *CreateSupportArchiveRequest) (*CreateSupportArchiveResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
+}
+func (UnimplementedSupportArchiveServer) AllSupportArchives(context.Context, *GetAllSupportArchivesRequest) (*GetAllSupportArchivesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AllSupportArchives not implemented")
+}
+func (UnimplementedSupportArchiveServer) DeleteSupportArchive(context.Context, *DeleteSupportArchiveRequest) (*DeleteSupportArchiveResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteSupportArchive not implemented")
 }
 func (UnimplementedSupportArchiveServer) mustEmbedUnimplementedSupportArchiveServer() {}
 
@@ -94,25 +136,79 @@ func RegisterSupportArchiveServer(s grpc.ServiceRegistrar, srv SupportArchiveSer
 	s.RegisterService(&SupportArchive_ServiceDesc, srv)
 }
 
-func _SupportArchive_Create_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(CreateSupportArchiveRequest)
+func _SupportArchive_LegacyCreate_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(LegacySupportArchiveRequest)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(SupportArchiveServer).Create(m, &supportArchiveCreateServer{stream})
+	return srv.(SupportArchiveServer).LegacyCreate(m, &supportArchiveLegacyCreateServer{stream})
 }
 
-type SupportArchive_CreateServer interface {
+type SupportArchive_LegacyCreateServer interface {
 	Send(*types.ChunkedDataResponse) error
 	grpc.ServerStream
 }
 
-type supportArchiveCreateServer struct {
+type supportArchiveLegacyCreateServer struct {
 	grpc.ServerStream
 }
 
-func (x *supportArchiveCreateServer) Send(m *types.ChunkedDataResponse) error {
+func (x *supportArchiveLegacyCreateServer) Send(m *types.ChunkedDataResponse) error {
 	return x.ServerStream.SendMsg(m)
+}
+
+func _SupportArchive_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateSupportArchiveRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SupportArchiveServer).Create(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/maintenance.SupportArchive/Create",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SupportArchiveServer).Create(ctx, req.(*CreateSupportArchiveRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SupportArchive_AllSupportArchives_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAllSupportArchivesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SupportArchiveServer).AllSupportArchives(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/maintenance.SupportArchive/AllSupportArchives",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SupportArchiveServer).AllSupportArchives(ctx, req.(*GetAllSupportArchivesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SupportArchive_DeleteSupportArchive_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteSupportArchiveRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SupportArchiveServer).DeleteSupportArchive(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/maintenance.SupportArchive/DeleteSupportArchive",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SupportArchiveServer).DeleteSupportArchive(ctx, req.(*DeleteSupportArchiveRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 // SupportArchive_ServiceDesc is the grpc.ServiceDesc for SupportArchive service.
@@ -121,11 +217,24 @@ func (x *supportArchiveCreateServer) Send(m *types.ChunkedDataResponse) error {
 var SupportArchive_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "maintenance.SupportArchive",
 	HandlerType: (*SupportArchiveServer)(nil),
-	Methods:     []grpc.MethodDesc{},
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Create",
+			Handler:    _SupportArchive_Create_Handler,
+		},
+		{
+			MethodName: "AllSupportArchives",
+			Handler:    _SupportArchive_AllSupportArchives_Handler,
+		},
+		{
+			MethodName: "DeleteSupportArchive",
+			Handler:    _SupportArchive_DeleteSupportArchive_Handler,
+		},
+	},
 	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "Create",
-			Handler:       _SupportArchive_Create_Handler,
+			StreamName:    "LegacyCreate",
+			Handler:       _SupportArchive_LegacyCreate_Handler,
 			ServerStreams: true,
 		},
 	},

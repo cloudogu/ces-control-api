@@ -9,19 +9,48 @@ option go_package = "github.com/cloudogu/ces-control-api/generated/maintenance";
 
 // The SupportArchive service provides endpoints to create the support archive.
 service SupportArchive {
-  rpc Create(CreateSupportArchiveRequest) returns (stream types.ChunkedDataResponse);
+  rpc LegacyCreate(LegacySupportArchiveRequest) returns (stream types.ChunkedDataResponse);
+  rpc Create(CreateSupportArchiveRequest) returns (CreateSupportArchiveResponse);
+  rpc AllSupportArchives(GetAllSupportArchivesRequest) returns (GetAllSupportArchivesResponse);
+  rpc DeleteSupportArchive(DeleteSupportArchiveRequest) returns (DeleteSupportArchiveResponse);
 }
+
+message DeleteSupportArchiveRequest {
+  string name = 1;
+}
+
+message DeleteSupportArchiveResponse {
+}
+
 
 message CreateSupportArchiveRequest {
-  oneof environment {
-    LegacySupportArchiveRequest legacy = 1 [deprecated = true];
-    CommonSupportArchiveRequest common = 2;
-  }
-}
-
-message CommonSupportArchiveRequest {
   ExcludedContents excluded_contents = 1;
   ContentTimeframe content_timeframe = 2;
+}
+
+message CreateSupportArchiveResponse {
+
+}
+
+message GetAllSupportArchivesRequest {
+
+}
+
+message GetAllSupportArchivesResponse {
+  repeated Archive supportArchives  = 1;
+}
+
+message Archive {
+  string name = 1;
+  string start_time = 2;
+  SupportArchiveStatus status = 3;
+}
+
+enum SupportArchiveStatus {
+  SUPPORT_ARCHIVE_STATUS_CREATED = 0;
+  SUPPORT_ARCHIVE_STATUS_IN_PROGRESS = 1;
+  SUPPORT_ARCHIVE_STATUS_COMPLETED = 2;
+  SUPPORT_ARCHIVE_STATUS_FAILED = 3;
 }
 
 message ExcludedContents {
