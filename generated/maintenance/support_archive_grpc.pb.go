@@ -23,10 +23,17 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SupportArchiveClient interface {
+	// Deprecated: Do not use.
+	// LegacyCreate creates a support archive and streams it back (deprecated, use Create instead).
 	LegacyCreate(ctx context.Context, in *LegacySupportArchiveRequest, opts ...grpc.CallOption) (SupportArchive_LegacyCreateClient, error)
+	// Create creates a support archive asynchronously.
 	Create(ctx context.Context, in *CreateSupportArchiveRequest, opts ...grpc.CallOption) (*CreateSupportArchiveResponse, error)
+	// AllSupportArchives retrieves all support archives in the system.
 	AllSupportArchives(ctx context.Context, in *GetAllSupportArchivesRequest, opts ...grpc.CallOption) (*GetAllSupportArchivesResponse, error)
+	// DeleteSupportArchive deletes a support archive.
 	DeleteSupportArchive(ctx context.Context, in *DeleteSupportArchiveRequest, opts ...grpc.CallOption) (*DeleteSupportArchiveResponse, error)
+	// DownloadSupportArchive downloads a support archive and streams it back.
+	DownloadSupportArchive(ctx context.Context, in *DownloadSupportArchiveRequest, opts ...grpc.CallOption) (SupportArchive_DownloadSupportArchiveClient, error)
 }
 
 type supportArchiveClient struct {
@@ -37,6 +44,7 @@ func NewSupportArchiveClient(cc grpc.ClientConnInterface) SupportArchiveClient {
 	return &supportArchiveClient{cc}
 }
 
+// Deprecated: Do not use.
 func (c *supportArchiveClient) LegacyCreate(ctx context.Context, in *LegacySupportArchiveRequest, opts ...grpc.CallOption) (SupportArchive_LegacyCreateClient, error) {
 	stream, err := c.cc.NewStream(ctx, &SupportArchive_ServiceDesc.Streams[0], "/maintenance.SupportArchive/LegacyCreate", opts...)
 	if err != nil {
@@ -96,14 +104,53 @@ func (c *supportArchiveClient) DeleteSupportArchive(ctx context.Context, in *Del
 	return out, nil
 }
 
+func (c *supportArchiveClient) DownloadSupportArchive(ctx context.Context, in *DownloadSupportArchiveRequest, opts ...grpc.CallOption) (SupportArchive_DownloadSupportArchiveClient, error) {
+	stream, err := c.cc.NewStream(ctx, &SupportArchive_ServiceDesc.Streams[1], "/maintenance.SupportArchive/DownloadSupportArchive", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &supportArchiveDownloadSupportArchiveClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type SupportArchive_DownloadSupportArchiveClient interface {
+	Recv() (*types.ChunkedDataResponse, error)
+	grpc.ClientStream
+}
+
+type supportArchiveDownloadSupportArchiveClient struct {
+	grpc.ClientStream
+}
+
+func (x *supportArchiveDownloadSupportArchiveClient) Recv() (*types.ChunkedDataResponse, error) {
+	m := new(types.ChunkedDataResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // SupportArchiveServer is the server API for SupportArchive service.
 // All implementations must embed UnimplementedSupportArchiveServer
 // for forward compatibility
 type SupportArchiveServer interface {
+	// Deprecated: Do not use.
+	// LegacyCreate creates a support archive and streams it back (deprecated, use Create instead).
 	LegacyCreate(*LegacySupportArchiveRequest, SupportArchive_LegacyCreateServer) error
+	// Create creates a support archive asynchronously.
 	Create(context.Context, *CreateSupportArchiveRequest) (*CreateSupportArchiveResponse, error)
+	// AllSupportArchives retrieves all support archives in the system.
 	AllSupportArchives(context.Context, *GetAllSupportArchivesRequest) (*GetAllSupportArchivesResponse, error)
+	// DeleteSupportArchive deletes a support archive.
 	DeleteSupportArchive(context.Context, *DeleteSupportArchiveRequest) (*DeleteSupportArchiveResponse, error)
+	// DownloadSupportArchive downloads a support archive and streams it back.
+	DownloadSupportArchive(*DownloadSupportArchiveRequest, SupportArchive_DownloadSupportArchiveServer) error
 	mustEmbedUnimplementedSupportArchiveServer()
 }
 
@@ -122,6 +169,9 @@ func (UnimplementedSupportArchiveServer) AllSupportArchives(context.Context, *Ge
 }
 func (UnimplementedSupportArchiveServer) DeleteSupportArchive(context.Context, *DeleteSupportArchiveRequest) (*DeleteSupportArchiveResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteSupportArchive not implemented")
+}
+func (UnimplementedSupportArchiveServer) DownloadSupportArchive(*DownloadSupportArchiveRequest, SupportArchive_DownloadSupportArchiveServer) error {
+	return status.Errorf(codes.Unimplemented, "method DownloadSupportArchive not implemented")
 }
 func (UnimplementedSupportArchiveServer) mustEmbedUnimplementedSupportArchiveServer() {}
 
@@ -211,6 +261,27 @@ func _SupportArchive_DeleteSupportArchive_Handler(srv interface{}, ctx context.C
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SupportArchive_DownloadSupportArchive_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(DownloadSupportArchiveRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(SupportArchiveServer).DownloadSupportArchive(m, &supportArchiveDownloadSupportArchiveServer{stream})
+}
+
+type SupportArchive_DownloadSupportArchiveServer interface {
+	Send(*types.ChunkedDataResponse) error
+	grpc.ServerStream
+}
+
+type supportArchiveDownloadSupportArchiveServer struct {
+	grpc.ServerStream
+}
+
+func (x *supportArchiveDownloadSupportArchiveServer) Send(m *types.ChunkedDataResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
 // SupportArchive_ServiceDesc is the grpc.ServiceDesc for SupportArchive service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -235,6 +306,11 @@ var SupportArchive_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "LegacyCreate",
 			Handler:       _SupportArchive_LegacyCreate_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "DownloadSupportArchive",
+			Handler:       _SupportArchive_DownloadSupportArchive_Handler,
 			ServerStreams: true,
 		},
 	},

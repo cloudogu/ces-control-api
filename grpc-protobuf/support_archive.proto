@@ -9,64 +9,105 @@ option go_package = "github.com/cloudogu/ces-control-api/generated/maintenance";
 
 // The SupportArchive service provides endpoints to create the support archive.
 service SupportArchive {
-  rpc LegacyCreate(LegacySupportArchiveRequest) returns (stream types.ChunkedDataResponse);
+  // LegacyCreate creates a support archive and streams it back (deprecated, use Create instead).
+  rpc LegacyCreate(LegacySupportArchiveRequest) returns (stream types.ChunkedDataResponse) {
+    option deprecated = true;
+  }
+  // Create creates a support archive asynchronously.
   rpc Create(CreateSupportArchiveRequest) returns (CreateSupportArchiveResponse);
+  // AllSupportArchives retrieves all support archives in the system.
   rpc AllSupportArchives(GetAllSupportArchivesRequest) returns (GetAllSupportArchivesResponse);
+  // DeleteSupportArchive deletes a support archive.
   rpc DeleteSupportArchive(DeleteSupportArchiveRequest) returns (DeleteSupportArchiveResponse);
+  // DownloadSupportArchive downloads a support archive and streams it back.
+  rpc DownloadSupportArchive(DownloadSupportArchiveRequest) returns (stream types.ChunkedDataResponse);
 }
 
-message DeleteSupportArchiveRequest {
-  string name = 1;
-}
-
-message DeleteSupportArchiveResponse {
-}
-
-
+// CreateSupportArchiveRequest contains the data which are used to create a support archive.
 message CreateSupportArchiveRequest {
+  // excluded_contents contains the contents which should be excluded from the archive.
   ExcludedContents excluded_contents = 1;
+  // content_timeframe contains the timeframe for which content should be collected.
   ContentTimeframe content_timeframe = 2;
 }
 
-message CreateSupportArchiveResponse {
-
-}
-
-message GetAllSupportArchivesRequest {
-
-}
-
-message GetAllSupportArchivesResponse {
-  repeated Archive supportArchives  = 1;
-}
-
-message Archive {
-  string name = 1;
-  int64 start_time = 2;
-  SupportArchiveStatus status = 3;
-}
-
-enum SupportArchiveStatus {
-  SUPPORT_ARCHIVE_STATUS_CREATED = 0;
-  SUPPORT_ARCHIVE_STATUS_IN_PROGRESS = 1;
-  SUPPORT_ARCHIVE_STATUS_COMPLETED = 2;
-  SUPPORT_ARCHIVE_STATUS_FAILED = 3;
-}
-
+// ExcludedContents contains flags for content types that should be excluded from the support archive.
 message ExcludedContents {
+  // system_state indicates whether system state information should be excluded from the archive.
   bool system_state = 1;
+  // sensitive_data indicates whether sensitive data should be excluded from the archive.
   bool sensitive_data = 2;
+  // logs indicates whether logs should be excluded from the archive.
   bool logs = 3;
+  // events indicates whether events should be excluded from the archive.
   bool events = 4;
+  // volume_info indicates whether volume information should be excluded from the archive.
   bool volume_info = 5;
+  // system_info indicates whether system information should be excluded from the archive.
   bool system_info = 6;
 }
 
+// ContentTimeframe contains the timeframe for which content should be collected.
 message ContentTimeframe {
+  // start_date_time contains the start time for content collection.
   optional google.protobuf.Timestamp start_date_time = 1;
+  // end_date_time contains the end time for content collection.
   optional google.protobuf.Timestamp end_date_time = 2;
 }
 
+// CreateSupportArchiveResponse contains the result of creating a support archive.
+message CreateSupportArchiveResponse {
+}
+
+// GetAllSupportArchivesRequest contains the data which are used to retrieve all support archives.
+message GetAllSupportArchivesRequest {
+}
+
+// GetAllSupportArchivesResponse contains all support archives in the system.
+message GetAllSupportArchivesResponse {
+  // supportArchives contains a list of all support archives.
+  repeated Archive supportArchives  = 1;
+}
+
+// Archive contains information about a support archive.
+message Archive {
+  // name contains the name of the support archive.
+  string name = 1;
+  // start_time contains the time when the support archive was started.
+  int64 start_time = 2;
+  // status contains the current status of the support archive.
+  SupportArchiveStatus status = 3;
+}
+
+// SupportArchiveStatus defines the available support archive statuses.
+enum SupportArchiveStatus {
+  // SUPPORT_ARCHIVE_STATUS_CREATED indicates that the support archive has been created.
+  SUPPORT_ARCHIVE_STATUS_CREATED = 0;
+  // SUPPORT_ARCHIVE_STATUS_IN_PROGRESS indicates that the support archive creation is in progress.
+  SUPPORT_ARCHIVE_STATUS_IN_PROGRESS = 1;
+  // SUPPORT_ARCHIVE_STATUS_COMPLETED indicates that the support archive creation has been completed.
+  SUPPORT_ARCHIVE_STATUS_COMPLETED = 2;
+  // SUPPORT_ARCHIVE_STATUS_FAILED indicates that the support archive creation has failed.
+  SUPPORT_ARCHIVE_STATUS_FAILED = 3;
+}
+
+// DownloadSupportArchiveRequest contains the data which are used to download a support archive.
+message DownloadSupportArchiveRequest {
+  // name contains the name of the support archive to download.
+  string name = 1;
+}
+
+// DeleteSupportArchiveRequest contains the data which are used to delete a support archive.
+message DeleteSupportArchiveRequest {
+  // name contains the name of the support archive to delete.
+  string name = 1;
+}
+
+// DeleteSupportArchiveResponse contains the result of deleting a support archive.
+message DeleteSupportArchiveResponse {
+}
+
+// LegacySupportArchiveRequest contains the data which are used to create a support archive (deprecated, use CreateSupportArchiveRequest instead).
 message LegacySupportArchiveRequest {
   // CollectEtcd defines whether etcd keys/values should be contained in the final archive (true) or nor (false)
   bool collect_etcd = 1;
