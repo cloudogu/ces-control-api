@@ -65,8 +65,8 @@ message GetAllSupportArchivesRequest {
 
 // GetAllSupportArchivesResponse contains all support archives in the system.
 message GetAllSupportArchivesResponse {
-  // supportArchives contains a list of all support archives.
-  repeated Archive supportArchives  = 1;
+  // support_archives contains a list of all support archives.
+  repeated Archive support_archives  = 1;
 }
 
 // Archive contains information about a support archive.
@@ -81,14 +81,16 @@ message Archive {
 
 // SupportArchiveStatus defines the available support archive statuses.
 enum SupportArchiveStatus {
+  // SUPPORT_ARCHIVE_STATUS_UNSPECIFIED indicates an unspecified status.
+  SUPPORT_ARCHIVE_STATUS_UNSPECIFIED = 0;
   // SUPPORT_ARCHIVE_STATUS_CREATED indicates that the support archive has been created.
-  SUPPORT_ARCHIVE_STATUS_CREATED = 0;
+  SUPPORT_ARCHIVE_STATUS_CREATED = 1;
   // SUPPORT_ARCHIVE_STATUS_IN_PROGRESS indicates that the support archive creation is in progress.
-  SUPPORT_ARCHIVE_STATUS_IN_PROGRESS = 1;
+  SUPPORT_ARCHIVE_STATUS_IN_PROGRESS = 2;
   // SUPPORT_ARCHIVE_STATUS_COMPLETED indicates that the support archive creation has been completed.
-  SUPPORT_ARCHIVE_STATUS_COMPLETED = 2;
+  SUPPORT_ARCHIVE_STATUS_COMPLETED = 3;
   // SUPPORT_ARCHIVE_STATUS_FAILED indicates that the support archive creation has failed.
-  SUPPORT_ARCHIVE_STATUS_FAILED = 3;
+  SUPPORT_ARCHIVE_STATUS_FAILED = 4;
 }
 
 // DownloadSupportArchiveRequest contains the data which are used to download a support archive.
@@ -107,7 +109,8 @@ message DeleteSupportArchiveRequest {
 message DeleteSupportArchiveResponse {
 }
 
-// LegacySupportArchiveRequest contains the data which are used to create a support archive (deprecated, use CreateSupportArchiveRequest instead).
+// LegacySupportArchiveRequest contains the data which are used to create a support archive
+// (deprecated, use CreateSupportArchiveRequest instead).
 message LegacySupportArchiveRequest {
   // CollectEtcd defines whether etcd keys/values should be contained in the final archive (true) or nor (false)
   bool collect_etcd = 1;
