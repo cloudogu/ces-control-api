@@ -1,6 +1,6 @@
 # Set these to the desired values
 ARTIFACT_ID=ces-control-api
-VERSION=1.6.0
+VERSION=1.7.0
 GOTAG=1.24.1
 LINT_VERSION=v2.0.1
 STAGE?=production
