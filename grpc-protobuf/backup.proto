@@ -18,6 +18,10 @@ service BackupManagement {
   rpc GetSchedule(GetBackupScheduleRequest) returns (GetBackupScheduleResponse);
   // SetSchedule sets the backup schedule as a cron expression.
   rpc SetSchedule(SetBackupScheduleRequest) returns (SetBackupScheduleResponse);
+  // GetTimeout retrieves the backup timeout as a cron expression.
+  rpc GetTimeout(GetBackupTimeoutRequest) returns (GetBackupTimeoutResponse);
+  // SetTimeout sets the backup timeout as a cron expression.
+  rpc SetTimeout(SetBackupTimeoutRequest) returns (SetBackupTimeoutResponse);
   // GetRetentionPolicy retrieves the current backup retention policy.
   rpc GetRetentionPolicy(GetRetentionPolicyRequest) returns (GetRetentionPolicyResponse);
   // CreateBackup creates a new backup
@@ -130,6 +134,26 @@ message SetBackupScheduleRequest {
 
 // SetBackupScheduleResponse contains the result of setting the backup schedule.
 message SetBackupScheduleResponse {
+}
+
+// BackupTimeoutRequest contains the data which are used to retrieve the backup timeout.
+message GetBackupTimeoutRequest {
+}
+
+// BackupTimeoutResponse contains the backup timeout as a cron expression.
+message GetBackupTimeoutResponse {
+  // timeout contains the backup timeout as a cron expression string.
+  string timeout = 1;
+}
+
+// SetBackupTimeoutRequest contains the data which are used to set the backup timeout.
+message SetBackupTimeoutRequest {
+  // timeout contains the backup timeout as a cron expression string to be set.
+  string timeout = 1;
+}
+
+// SetBackupTimeoutResponse contains the result of setting the backup timeout.
+message SetBackupTimeoutResponse {
 }
 
 // RetentionPolicy defines the available backup retention policies.

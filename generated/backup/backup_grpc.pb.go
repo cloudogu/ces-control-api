@@ -36,6 +36,10 @@ type BackupManagementClient interface {
 	GetSchedule(ctx context.Context, in *GetBackupScheduleRequest, opts ...grpc.CallOption) (*GetBackupScheduleResponse, error)
 	// SetSchedule sets the backup schedule as a cron expression.
 	SetSchedule(ctx context.Context, in *SetBackupScheduleRequest, opts ...grpc.CallOption) (*SetBackupScheduleResponse, error)
+	// GetTimeout retrieves the backup timeout as a cron expression.
+	GetTimeout(ctx context.Context, in *GetBackupTimeoutRequest, opts ...grpc.CallOption) (*GetBackupTimeoutResponse, error)
+	// SetTimeout sets the backup timeout as a cron expression.
+	SetTimeout(ctx context.Context, in *SetBackupTimeoutRequest, opts ...grpc.CallOption) (*SetBackupTimeoutResponse, error)
 	// GetRetentionPolicy retrieves the current backup retention policy.
 	GetRetentionPolicy(ctx context.Context, in *GetRetentionPolicyRequest, opts ...grpc.CallOption) (*GetRetentionPolicyResponse, error)
 	// CreateBackup creates a new backup
@@ -115,6 +119,24 @@ func (c *backupManagementClient) SetSchedule(ctx context.Context, in *SetBackupS
 	return out, nil
 }
 
+func (c *backupManagementClient) GetTimeout(ctx context.Context, in *GetBackupTimeoutRequest, opts ...grpc.CallOption) (*GetBackupTimeoutResponse, error) {
+	out := new(GetBackupTimeoutResponse)
+	err := c.cc.Invoke(ctx, "/backup.BackupManagement/GetTimeout", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *backupManagementClient) SetTimeout(ctx context.Context, in *SetBackupTimeoutRequest, opts ...grpc.CallOption) (*SetBackupTimeoutResponse, error) {
+	out := new(SetBackupTimeoutResponse)
+	err := c.cc.Invoke(ctx, "/backup.BackupManagement/SetTimeout", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *backupManagementClient) GetRetentionPolicy(ctx context.Context, in *GetRetentionPolicyRequest, opts ...grpc.CallOption) (*GetRetentionPolicyResponse, error) {
 	out := new(GetRetentionPolicyResponse)
 	err := c.cc.Invoke(ctx, "/backup.BackupManagement/GetRetentionPolicy", in, out, opts...)
@@ -160,6 +182,10 @@ type BackupManagementServer interface {
 	GetSchedule(context.Context, *GetBackupScheduleRequest) (*GetBackupScheduleResponse, error)
 	// SetSchedule sets the backup schedule as a cron expression.
 	SetSchedule(context.Context, *SetBackupScheduleRequest) (*SetBackupScheduleResponse, error)
+	// GetTimeout retrieves the backup timeout as a cron expression.
+	GetTimeout(context.Context, *GetBackupTimeoutRequest) (*GetBackupTimeoutResponse, error)
+	// SetTimeout sets the backup timeout as a cron expression.
+	SetTimeout(context.Context, *SetBackupTimeoutRequest) (*SetBackupTimeoutResponse, error)
 	// GetRetentionPolicy retrieves the current backup retention policy.
 	GetRetentionPolicy(context.Context, *GetRetentionPolicyRequest) (*GetRetentionPolicyResponse, error)
 	// CreateBackup creates a new backup
@@ -193,6 +219,12 @@ func (UnimplementedBackupManagementServer) GetSchedule(context.Context, *GetBack
 }
 func (UnimplementedBackupManagementServer) SetSchedule(context.Context, *SetBackupScheduleRequest) (*SetBackupScheduleResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetSchedule not implemented")
+}
+func (UnimplementedBackupManagementServer) GetTimeout(context.Context, *GetBackupTimeoutRequest) (*GetBackupTimeoutResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTimeout not implemented")
+}
+func (UnimplementedBackupManagementServer) SetTimeout(context.Context, *SetBackupTimeoutRequest) (*SetBackupTimeoutResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetTimeout not implemented")
 }
 func (UnimplementedBackupManagementServer) GetRetentionPolicy(context.Context, *GetRetentionPolicyRequest) (*GetRetentionPolicyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRetentionPolicy not implemented")
@@ -342,6 +374,42 @@ func _BackupManagement_SetSchedule_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BackupManagement_GetTimeout_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetBackupTimeoutRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupManagementServer).GetTimeout(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/backup.BackupManagement/GetTimeout",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupManagementServer).GetTimeout(ctx, req.(*GetBackupTimeoutRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BackupManagement_SetTimeout_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetBackupTimeoutRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupManagementServer).SetTimeout(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/backup.BackupManagement/SetTimeout",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupManagementServer).SetTimeout(ctx, req.(*SetBackupTimeoutRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _BackupManagement_GetRetentionPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetRetentionPolicyRequest)
 	if err := dec(in); err != nil {
@@ -430,6 +498,14 @@ var BackupManagement_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SetSchedule",
 			Handler:    _BackupManagement_SetSchedule_Handler,
+		},
+		{
+			MethodName: "GetTimeout",
+			Handler:    _BackupManagement_GetTimeout_Handler,
+		},
+		{
+			MethodName: "SetTimeout",
+			Handler:    _BackupManagement_SetTimeout_Handler,
 		},
 		{
 			MethodName: "GetRetentionPolicy",
