@@ -1,0 +1,28 @@
+syntax = "proto3";
+package mfa;
+option go_package = "github.com/cloudogu/ces-control-api/generated/mfa";
+
+// The Multifactor service provides endpoints to retrieve and delete multifactor devices for users.
+service Multifactor {
+  rpc GetAll(MultifactorAllRequest) returns (MultifactorResponse);
+  rpc Delete(MultifactorDeleteRequest) returns (MultifactorDeleteResponse);
+}
+
+message MultifactorAllRequest {
+}
+
+message MultifactorAllResponse {
+  repeated MultifactorResponse mfas = 1;
+}
+
+message MultifactorResponse {
+  string user_name = 1;
+  string device_name = 2;
+}
+
+message MultifactorDeleteRequest {
+  string user_name = 1;
+}
+
+message MultifactorDeleteResponse {
+}
