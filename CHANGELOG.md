@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v1.10.0] - 2026-09-17
+### Added
+- [#35] added Category to Dogu response objects
+
 ## [v1.9.0] - 2026-09-10
 - [#32] add errormessage to debugmode response
 
